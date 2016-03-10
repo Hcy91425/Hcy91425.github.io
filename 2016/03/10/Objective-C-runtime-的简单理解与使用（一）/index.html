@@ -67,7 +67,7 @@
 一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 run">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/messaging1.gif">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E7%B1%BB%E5%92%8C%E5%85%83%E7%B1%BB.png">
-<meta property="og:updated_time" content="2016-03-10T12:40:57.000Z">
+<meta property="og:updated_time" content="2016-03-10T12:57:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C runtime 的简单理解与使用（一）">
 <meta name="twitter:description" content="写在前面
@@ -337,7 +337,7 @@
 <p>看到这个结构体， 我们应该就很明确 selector 的意义了。<strong>selector</strong> 其实就是<strong>方法的一个标示</strong>，而 <strong>method_imp</strong> 指向的才是<strong>真正的函数实现</strong>。当我们向对象发送消息后， runtime根据 selector 这个标示，在method_list中找到对应的 objc_method，取到真正的函数的地址，再执行。</p>
 </blockquote>
 <h3 id="struct-objc-cache-cache"><a href="#struct-objc-cache-cache" class="headerlink" title="struct objc_cache *cache"></a>struct objc_cache *cache</h3><blockquote>
-<p>catch 用来缓存最近调用过的的方法。 如果每次向对象发送消息都要遍历一遍方法列表那会很浪费时间， 所以会把最近调用过的方法放在缓存中。每一次发送消息时，会先查询缓存，缓存中找不到再去方法列表中找。</p>
+<p>cache 用来缓存最近调用过的的方法。 如果每次向对象发送消息都要遍历一遍方法列表那会很浪费时间， 所以会把最近调用过的方法放在缓存中。每一次发送消息时，会先查询缓存，缓存中找不到再去方法列表中找。</p>
 </blockquote>
 <h3 id="struct-objc-protocol-list-protocols"><a href="#struct-objc-protocol-list-protocols" class="headerlink" title="struct objc_protocol_list *protocols"></a>struct objc_protocol_list *protocols</h3><blockquote>
 <p>protocols 指向协议列表。</p>
