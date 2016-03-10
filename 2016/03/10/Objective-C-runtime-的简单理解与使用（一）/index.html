@@ -58,20 +58,20 @@
 
 
 <meta name="description" content="写在前面
-一开始接触 iOS 的时候，我学的是 Swift。马上就要大四了，为了实习，也为了更好的理解 iOS，最近一个多月我开始正式学习 Objective-C。而 runtime “运行时” 这个东西，在学习 Swift 的过程中也没少看到，开始学了 OC 以后更多了。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-">
+一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 run">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Objective-C runtime 的简单理解与使用（一）">
 <meta property="og:url" content="http://yoursite.com/2016/03/10/Objective-C-runtime-的简单理解与使用（一）/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
 <meta property="og:description" content="写在前面
-一开始接触 iOS 的时候，我学的是 Swift。马上就要大四了，为了实习，也为了更好的理解 iOS，最近一个多月我开始正式学习 Objective-C。而 runtime “运行时” 这个东西，在学习 Swift 的过程中也没少看到，开始学了 OC 以后更多了。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-">
+一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 run">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/messaging1.gif">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E7%B1%BB%E5%92%8C%E5%85%83%E7%B1%BB.png">
-<meta property="og:updated_time" content="2016-03-10T12:23:38.000Z">
+<meta property="og:updated_time" content="2016-03-10T12:40:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C runtime 的简单理解与使用（一）">
 <meta name="twitter:description" content="写在前面
-一开始接触 iOS 的时候，我学的是 Swift。马上就要大四了，为了实习，也为了更好的理解 iOS，最近一个多月我开始正式学习 Objective-C。而 runtime “运行时” 这个东西，在学习 Swift 的过程中也没少看到，开始学了 OC 以后更多了。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-">
+一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 run">
 <meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/messaging1.gif">
 
 
@@ -304,7 +304,7 @@
 
       
         <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
-<p>一开始接触 iOS 的时候，我学的是 Swift。马上就要大四了，为了实习，也为了更好的理解 iOS，最近一个多月我开始正式学习 Objective-C。而 runtime “运行时” 这个东西，在学习 Swift 的过程中也没少看到，开始学了 OC 以后更多了。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 runtime ，官方文档还没有看过，希望以后能够补上。如果有什么理解的不对的地方，希望大家指出。😆</p>
+<p>一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 runtime ，官方文档还没有看过，希望以后能够补上。如果有什么理解的不对的地方，希望大家指出。😆</p>
 <h2 id="Objective-C中的消息分发"><a href="#Objective-C中的消息分发" class="headerlink" title="Objective-C中的消息分发"></a>Objective-C中的消息分发</h2><hr>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
 <p>这是我们在 OC 中调用方法的方式， 但其实这应该称作<strong>“传递消息”（pass a message）</strong>，给 someObject 对象传递一个 doSomething的消息。因为这行代码在编译时会变成这样：</p>
