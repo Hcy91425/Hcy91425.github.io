@@ -1,0 +1,857 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="runtime," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="写在前面
+在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+关联对象（Associated Object）
+关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
+与关联对象相关的函数有三个：
+123objc_setAssociatedObject(id object, co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C runtime 的简单理解与使用（二）">
+<meta property="og:url" content="http://yoursite.com/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/index.html">
+<meta property="og:site_name" content="Cyrus' blog">
+<meta property="og:description" content="写在前面
+在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+关联对象（Associated Object）
+关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
+与关联对象相关的函数有三个：
+123objc_setAssociatedObject(id object, co">
+<meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
+<meta property="og:updated_time" content="2016-03-12T05:28:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C runtime 的简单理解与使用（二）">
+<meta name="twitter:description" content="写在前面
+在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+关联对象（Associated Object）
+关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
+与关联对象相关的函数有三个：
+123objc_setAssociatedObject(id object, co">
+<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Objective-C runtime 的简单理解与使用（二） | Cyrus' blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?cd9f46dbb7a9fdcca40afd13f56fdd19";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Cyrus' blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Objective-C runtime 的简单理解与使用（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T20:04:06+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Objective-C-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Objective-C 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+<p>在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
+<h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
+<p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
+<p>与关联对象相关的函数有三个：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy);</span><br><span class="line">objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line">objc_removeAssociatedObjects(<span class="keyword">id</span> object);</span><br></pre></td></tr></table></figure>
+<p>从函数名我们也可以看出来，这三个函数分别是用来设置，获取和移除关联对象的。这里要解释一下的是他们的参数。</p>
+<ul>
+<li>第一个参数 id object 显然就是你要设置关联对象的那个对象。</li>
+<li>第二个参数 const void *key 就是用来区分不同的关联对象的 key，因为想让两个 key 匹配到同一个关联对象就必须是完全相等的指针，所以我们一般用静态全局变量来作为 key。</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">void</span> *AssociatedKey = <span class="string">"AssociatedKey"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三个参数 id value 就是要关联的对象了。</li>
+<li>第四个参数 objc_AssociationPolicy policy 指的是关联对象的存储策略，它是一个枚举，可以与 property 的 attribute 相对应：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> OBJC_ENUM(uintptr_t, objc_AssociationPolicy) &#123;</span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_ASSIGN</span> = <span class="number">0</span>,						 <span class="comment">// assign</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN_NONATOMIC</span> = <span class="number">1</span>,			   <span class="comment">// nonatomic, retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span> = <span class="number">3</span>,				 <span class="comment">// nonatomic, copy</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN</span> = <span class="number">01401</span>,					 <span class="comment">// retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY</span> = <span class="number">01403</span>						<span class="comment">// copy</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>大家知道，在 category 中，我们无法添加 property，因为无法添加实例变量。那么，我们现在就可以通过关联对象来实现在 category 中添加属性的功能了。</p>
+<p>我们现在 CYClass 类的拓展中声明了一个属性</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *aString;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>如果这个时候我们直接在外部访问这个属性， 那个程序是会 crash 的，不信你可以试试😅，编译器会说：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'-[CYClass setAString:]: unrecognized selector sent to instance 0x1001060a0'</span><br></pre></td></tr></table></figure>
+<p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br><a id="more"></a></p>
+<h2 id="方法调配（Method-Swizzling）"><a href="#方法调配（Method-Swizzling）" class="headerlink" title="方法调配（Method Swizzling）"></a>方法调配（Method Swizzling）</h2><hr>
+<p>在前一篇博客中我们知道了每个类中的方法是以 objc_method 结构体的形式放在 methodLists 中的。每一个 selector 对应了一个实现的函数的指针 IMP。而 method swizzling 技术就是通过交换这个函数指针来实现的。</p>
+<p>我们最好在 +load 方法中使用 method swizzling，因为 +load 方法对于加入运行期中的每个类及分类都会调用且只调用一次。所以在这里交换方法是最安全的。</p>
+<p>我们来看一下苹果为我们提供了哪些API来实现 method swizzling：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMP class_replaceMethod(Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types);</span><br></pre></td></tr></table></figure></p>
+<p>可以直接替换方法，当需要的方法不存在时，会先调用 class_addMethod 来添加一个新的方法。会返回替换前的实现函数指针 。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Method class_getInstanceMethod(Class cls, SEL name);</span><br></pre></td></tr></table></figure>
+<p>根据类和 selector 得到 method，用来作为下面两个方法的参数。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMP method_setImplementation(Method m, IMP imp);</span><br></pre></td></tr></table></figure>
+<p>直接为一个方法设置它的实现，返回之前的实现函数指针</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> method_exchangeImplementations(Method m1, Method m2)</span><br></pre></td></tr></table></figure>
+<p>交换两个方法的实现，实际上就是调用了两次 method_setImplementation，并且是线程安全的。</p>
+<p>我们用 method_exchangeImplementations 来简单的尝试一下 method swizzling，我添加了一个 NSString 的分类，用我自己的方法交换了系统的 lowercaseString 方法：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSString</span> (<span class="title">Swizzling</span>)</span></span><br><span class="line">+ (<span class="keyword">void</span>)load &#123;</span><br><span class="line">    Method originalMethod = class_getInstanceMethod([<span class="keyword">self</span> class], <span class="keyword">@selector</span>(lowercaseString));</span><br><span class="line">    Method swappedMthod = class_getInstanceMethod([<span class="keyword">self</span> class], <span class="keyword">@selector</span>(swizzle_lowercaseString));</span><br><span class="line">    method_exchangeImplementations(originalMethod, swappedMthod);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)swizzle_lowercaseString &#123;</span><br><span class="line">    <span class="built_in">NSString</span> *lowercase = [<span class="keyword">self</span> swizzle_lowercaseString];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"FROM: %@  TO:  %@"</span>, <span class="keyword">self</span>, lowercase);</span><br><span class="line">    <span class="keyword">return</span> lowercase;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>可能有人会觉得在自己新写的 swizzle_lowercaseString 方法中又调用 [self swizzle_lowercaseString] 会导致死循环，其实在交换了方法以后我们调用原来的 lowercaseString 方法就会进入这个方法的实现，而这时候调用 swizzle_lowercaseString 其实调用的是系统原来的方法，所以是不会产生死循环的。这里理解起来可能有点奇怪。</p>
+<p>我们在看一下调用的结果</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-11</span> <span class="number">20</span>:<span class="number">01</span>:<span class="number">05.645</span> Example[<span class="number">4129</span>:<span class="number">101067</span>] FROM: Hello World  TO:  hello world</span><br></pre></td></tr></table></figure>
+<p>当然 method swizzling 是一把双刃剑，我们可以用它来进行黑盒测试，在真正的项目中如果用 method swizzling 一定要格外小心。</p>
+<h2 id="消息转发机制（Message-Forwarding）"><a href="#消息转发机制（Message-Forwarding）" class="headerlink" title="消息转发机制（Message Forwarding）"></a>消息转发机制（Message Forwarding）</h2><hr>
+<p>当我们的对象接收到一个无法解读的消息时，就会进入消息转发。消息转发分为两大阶段，第一阶段是动态方法解析，第二阶段是完整的消息转发。</p>
+<h3 id="动态方法解析（dynamic-method-resolution）"><a href="#动态方法解析（dynamic-method-resolution）" class="headerlink" title="动态方法解析（dynamic method resolution）"></a>动态方法解析（dynamic method resolution）</h3><hr>
+<p>要实现动态方法解析只要重写两个方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel; <span class="comment">// 处理无法识别的实例方法</span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)resolveClassMethod:(SEL)sel;    <span class="comment">// 处理无法识别的类方法</span></span><br></pre></td></tr></table></figure>
+<p>这两个方法传进来的参数 selector 就是那个无法解析的方法，我们可以根据这个 selector 来动态的为这个类添加方法。比如像下面这样：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> dynamicMethod(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd) &#123;</span><br><span class="line">    <span class="comment">// do something here</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span></span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)sel &#123;</span><br><span class="line">    <span class="keyword">if</span> (sel == <span class="keyword">@selector</span>(someSelector)) &#123;       <span class="comment">// 对selector做一些逻辑判断</span></span><br><span class="line">        class_addMethod([<span class="keyword">self</span> class], sel, (IMP)dynamicMethod, <span class="string">"v@:"</span>);	<span class="comment">// 为类添加方法</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	<span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>还要提一下 class_addMethod 函数：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class_addMethod(__unsafe_unretained Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types);</span><br></pre></td></tr></table></figure>
+<p>它的最后一个参数是用来描述这个函数的返回值和参数类型的，称之为 类型编码（Type Encoding）。在前面那个例子里的 “v@:” 中， v 表示返回值为 void， @ 表示第一个参数是 id， ： 表示第二个参数类型是 SEL 。<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="external">更多的类型编码可以看这里</a></p>
+<p>当 resolveInstanceMethod: 返回 NO 时，就会进入消息转发的第二阶段 完整的消息转发机制。</p>
+<h3 id="完整的消息转发机制"><a href="#完整的消息转发机制" class="headerlink" title="完整的消息转发机制"></a>完整的消息转发机制</h3><hr>
+<p>完整的消息转发主要涉及两个方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector;</span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation;</span><br></pre></td></tr></table></figure>
+<p>如果在 + resolveInstanceMethod: 方法中返回了 NO 那么就会执行 - forwardingTargetForSelector: 方法。在这个方法内我们可以给对象返回一个备援的接受者来处理这个位置的信息。在 CYClass 的实现中我们这么写：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span></span></span><br><span class="line">- (<span class="keyword">id</span>)forwardingTargetForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">if</span> (aSelector == <span class="keyword">@selector</span>(unrecognizedSel)) &#123;</span><br><span class="line">        <span class="keyword">return</span> [AnotherClass new];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> forwardingTargetForSelector:aSelector];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>AnotherClass 的实例就是我们用来作为备援接受者的对象，我们在 AnotherClass 中实现了 unrecognizedSel 方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">AnotherClass</span></span></span><br><span class="line">- (<span class="keyword">void</span>)unrecognizedSel &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"forwarding target for unrecognized selector in AnotherClass"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>然后我们再给 CYClass 的实例发送 unrecognizedSel 的消息就不会 crash 了：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">CYClass *c = [CYClass new];</span><br><span class="line">[c performSelector:<span class="keyword">@selector</span>(unrecognizedSel)];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 打印结果</span></span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-12</span> <span class="number">12</span>:<span class="number">46</span>:<span class="number">30.608</span> example[<span class="number">1577</span>:<span class="number">19943</span>] forwarding target <span class="keyword">for</span> unrecognized selector <span class="keyword">in</span> AnotherClass</span><br></pre></td></tr></table></figure>
+<p>如果这一步我们也没有提供一个备援的接收者，那么就会进入最后一步 - forwardInvocation: 方法，系统会把所有与那条消息相关的信息全部封装在一个 NSInvocation 对象中，我们可以在直接改变调用的目标， 也可以修改消息的内容后再进行转发。我们把前一个方法去掉，然后重写一下 - forwardInvocation: 方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span></span></span><br><span class="line">- (<span class="built_in">NSMethodSignature</span> *)methodSignatureForSelector:(SEL)aSelector &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSMethodSignature</span> signatureWithObjCTypes:<span class="string">"v@:"</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)forwardInvocation:(<span class="built_in">NSInvocation</span> *)anInvocation &#123;</span><br><span class="line">    SEL sel = [anInvocation selector];</span><br><span class="line">    <span class="keyword">if</span> (sel == <span class="keyword">@selector</span>(unrecognizedSel)) &#123;</span><br><span class="line">        [anInvocation invokeWithTarget:[AnotherClass new]];</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    	[<span class="keyword">super</span> forwardInvocation: anInvocation];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>需要注意的是我们还要重写- methodSignatureForSelector: 方法，因为生成 NSInvocation 对象会调用到这个方法，否则会抛出异常。关于 forwardInvocation 了解的还不是很多，所以例子比较简单，以后有了更深的理解后会再加上。</p>
+<h3 id="消息转发的全过程"><a href="#消息转发的全过程" class="headerlink" title="消息转发的全过程"></a>消息转发的全过程</h3><p><img src="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>到这里对于 runtime 的简单理解与使用就基本结束了。总的来说，理解了 OC 的运行时会让我们的代码更加灵活，当然也会增大维护的难度。不过想要学好 OC 这门语言，runtime 是必不可少的！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/runtime/" rel="tag">#runtime</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/10/Objective-C-runtime-的简单理解与使用（一）/" rel="next" title="Objective-C runtime 的简单理解与使用（一）">
+                <i class="fa fa-chevron-left"></i> Objective-C runtime 的简单理解与使用（一）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/11/Objective-C-runtime-的简单理解与使用（二）/"
+           data-title="Objective-C runtime 的简单理解与使用（二）" data-url="http://yoursite.com/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Cyrus" />
+          <p class="site-author-name" itemprop="name">Cyrus</p>
+          <p class="site-description motion-element" itemprop="description">一个立志要成为iOS大神的男人🙇</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Hcy91425" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/5822241060" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联对象（Associated-Object）"><span class="nav-number">2.</span> <span class="nav-text">关联对象（Associated Object）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调配（Method-Swizzling）"><span class="nav-number">3.</span> <span class="nav-text">方法调配（Method Swizzling）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息转发机制（Message-Forwarding）"><span class="nav-number">4.</span> <span class="nav-text">消息转发机制（Message Forwarding）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态方法解析（dynamic-method-resolution）"><span class="nav-number">4.1.</span> <span class="nav-text">动态方法解析（dynamic method resolution）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整的消息转发机制"><span class="nav-number">4.2.</span> <span class="nav-text">完整的消息转发机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息转发的全过程"><span class="nav-number">4.3.</span> <span class="nav-text">消息转发的全过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cyrus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cyrusblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>

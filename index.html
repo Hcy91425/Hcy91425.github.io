@@ -186,6 +186,16 @@
         </li>
       
         
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-commonweal">
           <a href="/404.html" rel="section">
             
@@ -212,6 +222,146 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" itemprop="url">
+                  Objective-C runtime 的简单理解与使用（二）
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-11T20:04:06+08:00" content="2016-03-11">
+              2016-03-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Objective-C-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Objective-C 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+<p>在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
+<h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
+<p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
+<p>与关联对象相关的函数有三个：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy);</span><br><span class="line">objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line">objc_removeAssociatedObjects(<span class="keyword">id</span> object);</span><br></pre></td></tr></table></figure>
+<p>从函数名我们也可以看出来，这三个函数分别是用来设置，获取和移除关联对象的。这里要解释一下的是他们的参数。</p>
+<ul>
+<li>第一个参数 id object 显然就是你要设置关联对象的那个对象。</li>
+<li>第二个参数 const void *key 就是用来区分不同的关联对象的 key，因为想让两个 key 匹配到同一个关联对象就必须是完全相等的指针，所以我们一般用静态全局变量来作为 key。</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">void</span> *AssociatedKey = <span class="string">"AssociatedKey"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第三个参数 id value 就是要关联的对象了。</li>
+<li>第四个参数 objc_AssociationPolicy policy 指的是关联对象的存储策略，它是一个枚举，可以与 property 的 attribute 相对应：</li>
+</ul>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> OBJC_ENUM(uintptr_t, objc_AssociationPolicy) &#123;</span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_ASSIGN</span> = <span class="number">0</span>,						 <span class="comment">// assign</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN_NONATOMIC</span> = <span class="number">1</span>,			   <span class="comment">// nonatomic, retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span> = <span class="number">3</span>,				 <span class="comment">// nonatomic, copy</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN</span> = <span class="number">01401</span>,					 <span class="comment">// retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY</span> = <span class="number">01403</span>						<span class="comment">// copy</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>大家知道，在 category 中，我们无法添加 property，因为无法添加实例变量。那么，我们现在就可以通过关联对象来实现在 category 中添加属性的功能了。</p>
+<p>我们现在 CYClass 类的拓展中声明了一个属性</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *aString;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>如果这个时候我们直接在外部访问这个属性， 那个程序是会 crash 的，不信你可以试试😅，编译器会说：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'-[CYClass setAString:]: unrecognized selector sent to instance 0x1001060a0'</span><br></pre></td></tr></table></figure>
+<p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -476,7 +626,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -490,6 +640,13 @@
             </div>
           
 
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
           
 
         </nav>
