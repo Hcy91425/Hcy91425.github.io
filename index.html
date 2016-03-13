@@ -244,6 +244,130 @@
             
               
                 
+                <a class="post-title-link" href="/2016/03/13/Objective-C-块（Block）的使用与理解/" itemprop="url">
+                  Objective-C 块（Block）的使用与理解
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-13T16:33:30+08:00" content="2016-03-13">
+              2016-03-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Objective-C-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Objective-C 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/13/Objective-C-块（Block）的使用与理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/13/Objective-C-块（Block）的使用与理解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+<p>块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。</p>
+<h2 id="块的基础知识"><a href="#块的基础知识" class="headerlink" title="块的基础知识"></a>块的基础知识</h2><hr>
+<h3 id="块的声明"><a href="#块的声明" class="headerlink" title="块的声明"></a>块的声明</h3><p>块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// returnType (^blockName) (parameters)</span></span><br><span class="line"><span class="keyword">int</span> (^someBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="块的实现"><a href="#块的实现" class="headerlink" title="块的实现"></a>块的实现</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ^returnType(parameters)&#123;/*code*/&#125;;</span></span><br><span class="line">^<span class="keyword">int</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中返回值是可以省略的,它可以自动判断，如果参数也是空的话我们可以简化成这样：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/03/13/Objective-C-块（Block）的使用与理解/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" itemprop="url">
                   Objective-C runtime 的简单理解与使用（二）
                 </a>
@@ -334,7 +458,8 @@
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *aString;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <p>如果这个时候我们直接在外部访问这个属性， 那个程序是会 crash 的，不信你可以试试😅，编译器会说：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'-[CYClass setAString:]: unrecognized selector sent to instance 0x1001060a0'</span><br></pre></td></tr></table></figure>
-<p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" rel="contents">
@@ -626,7 +751,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-count">4</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -643,7 +768,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

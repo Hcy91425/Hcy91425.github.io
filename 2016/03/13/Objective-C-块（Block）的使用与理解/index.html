@@ -1,0 +1,836 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"/>
+
+
+
+
+  <link href="//fonts.googleapis.com/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Block," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.5.0" />
+
+
+
+
+
+
+<meta name="description" content="写在前面
+块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
+块的基础知识
+块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
+12// returnType (^blockName) (parameters)int">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C 块（Block）的使用与理解">
+<meta property="og:url" content="http://yoursite.com/2016/03/13/Objective-C-块（Block）的使用与理解/index.html">
+<meta property="og:site_name" content="Cyrus' blog">
+<meta property="og:description" content="写在前面
+块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
+块的基础知识
+块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
+12// returnType (^blockName) (parameters)int">
+<meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png">
+<meta property="og:updated_time" content="2016-03-13T08:46:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C 块（Block）的使用与理解">
+<meta name="twitter:description" content="写在前面
+块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
+块的基础知识
+块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
+12// returnType (^blockName) (parameters)int">
+<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"right","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+  <title> Objective-C 块（Block）的使用与理解 | Cyrus' blog </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?cd9f46dbb7a9fdcca40afd13f56fdd19";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Cyrus' blog</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home fa-fw"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-th fa-fw"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-user fa-fw"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive fa-fw"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags fa-fw"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-heartbeat fa-fw"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Objective-C 块（Block）的使用与理解
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-03-13T16:33:30+08:00" content="2016-03-13">
+              2016-03-13
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Objective-C-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">Objective-C 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/03/13/Objective-C-块（Block）的使用与理解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/13/Objective-C-块（Block）的使用与理解/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+<p>块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。</p>
+<h2 id="块的基础知识"><a href="#块的基础知识" class="headerlink" title="块的基础知识"></a>块的基础知识</h2><hr>
+<h3 id="块的声明"><a href="#块的声明" class="headerlink" title="块的声明"></a>块的声明</h3><p>块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// returnType (^blockName) (parameters)</span></span><br><span class="line"><span class="keyword">int</span> (^someBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="块的实现"><a href="#块的实现" class="headerlink" title="块的实现"></a>块的实现</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ^returnType(parameters)&#123;/*code*/&#125;;</span></span><br><span class="line">^<span class="keyword">int</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中返回值是可以省略的,它可以自动判断，如果参数也是空的话我们可以简化成这样：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="块的使用"><a href="#块的使用" class="headerlink" title="块的使用"></a>块的使用</h3><p>块的使用就像使用 C 函数一样</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someBlock（<span class="number">1</span>，<span class="number">2</span>）;</span><br></pre></td></tr></table></figure>
+<h3 id="用-typedef-来简化块的声明"><a href="#用-typedef-来简化块的声明" class="headerlink" title="用 typedef 来简化块的声明"></a>用 typedef 来简化块的声明</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> (^CYAddBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br><span class="line">CYAddBlock addBlock = ^(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br><span class="line">addBlock(<span class="number">1</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<h3 id="块能捕获在它声明范围里的所有变量"><a href="#块能捕获在它声明范围里的所有变量" class="headerlink" title="块能捕获在它声明范围里的所有变量"></a>块能捕获在它声明范围里的所有变量</h3><p>但是不能再块中修改捕获到的变量，如果我们尝试修改编译器会报错，无法通过编译。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> (^someBlock) () = ^&#123;</span><br><span class="line">	<span class="keyword">return</span> count;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> result = someBlock();	<span class="comment">// result = 0</span></span><br></pre></td></tr></table></figure>
+<h3 id="用-block-修饰变量，可以在块中修改变量的值"><a href="#用-block-修饰变量，可以在块中修改变量的值" class="headerlink" title="用 __block 修饰变量，可以在块中修改变量的值"></a>用 __block 修饰变量，可以在块中修改变量的值</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> (^someBlock) () = ^&#123;</span><br><span class="line">	<span class="keyword">return</span> ++count;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">int</span> result = someBlock();	<span class="comment">// result = 1</span></span><br></pre></td></tr></table></figure>
+<p>其实块在捕获变量时只是拷贝了一份变量的值，而用 __block 修饰后，拷贝的是变量的地址，所以我们就可以在块中修改变量了。这就和 C 语言中函数的参数是类似的道理。</p>
+<h3 id="小心产生循环引用"><a href="#小心产生循环引用" class="headerlink" title="小心产生循环引用"></a>小心产生循环引用</h3><p>在一个类中，块能直接访问并修改实例变量的值，但是一定要注意不管是通过 self 来访问属性还是直接通过 _instanceVariable 来访问<strong>都会捕获 self</strong>。因为在直接访问 _instanceVariable 等效于这样：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>-&gt;_instanceVariable;</span><br></pre></td></tr></table></figure>
+<p>而一旦捕获了self， 我们就一定要注意<strong>循环引用</strong>导致的内存泄露了。我们在 CYClass 中声明了一个块和一个属性：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">void</span> (^CYBlock) ();</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CYClass</span> : <span class="title">NSObject</span></span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *aString;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)CYBlock aBlock;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>然后重写它的 init 和 dealloc 方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span></span></span><br><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</span><br><span class="line">        _aString = <span class="string">@"Hello Cyrus"</span>;</span><br><span class="line">        _aBlock = ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, _aString);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)dealloc &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"CYClass deinit"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>然后我们实例化一个对象，紧接着就把它设为 nil 会发现 dealloc 方法并没有被调用，也就是说发生了内存泄露。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CYClass *c = [CYClass new];</span><br><span class="line">c = <span class="literal">nil</span>;</span><br></pre></td></tr></table></figure>
+<p>就像这样：</p>
+<p><img src="http://7xrpns.com1.z0.glb.clouddn.com/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png" alt=""></p>
+<p>我们可以通过 __weak 来打破这个循环，我们修改一下初始化方法：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">- (instancetype)init</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span> = [<span class="keyword">super</span> init]) &#123;</span><br><span class="line">        _aString = <span class="string">@"Hello Cyrus"</span>;</span><br><span class="line">        __<span class="keyword">weak</span> <span class="keyword">typeof</span>(<span class="keyword">self</span>) weakSelf = <span class="keyword">self</span>;</span><br><span class="line">        _aBlock = ^&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, weakSelf.aString);</span><br><span class="line">        &#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">self</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在执行之前的代码就会发现这个对象成功的销毁了。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-12</span> <span class="number">16</span>:<span class="number">30</span>:<span class="number">24.995</span> BlockExample[<span class="number">4777</span>:<span class="number">111670</span>] CYClass deinit</span><br></pre></td></tr></table></figure>
+<h2 id="块的本质"><a href="#块的本质" class="headerlink" title="块的本质"></a>块的本质</h2><hr>
+<h3 id="块的结构"><a href="#块的结构" class="headerlink" title="块的结构"></a>块的结构</h3><p>我们可以在<a href="https://llvm.org/svn/llvm-project/compiler-rt/tags/Apple/Libcompiler_rt-10/BlocksRuntime/Block_private.h" target="_blank" rel="external">这里</a>找到 Block 的定义：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> Block_descriptor &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> reserved;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> size;</span><br><span class="line">    <span class="keyword">void</span> (*<span class="keyword">copy</span>)(<span class="keyword">void</span> *dst, <span class="keyword">void</span> *src);</span><br><span class="line">    <span class="keyword">void</span> (*dispose)(<span class="keyword">void</span> *);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> Block_layout &#123;</span><br><span class="line">    <span class="keyword">void</span> *isa;</span><br><span class="line">    <span class="keyword">int</span> flags;</span><br><span class="line">    <span class="keyword">int</span> reserved; </span><br><span class="line">    <span class="keyword">void</span> (*invoke)(<span class="keyword">void</span> *, ...);</span><br><span class="line">    <span class="keyword">struct</span> Block_descriptor *descriptor;</span><br><span class="line">    <span class="comment">/* Imported variables. */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>看到 Block_layout 结构体里的第一个变量是一个 <strong>isa 指针</strong>， 我们应该就能猜到 <strong>Block 也是一个对象</strong>。然后再看第四个变量是一个叫 <strong>invoke 的函数指针</strong>，它指向的就是 <strong>Block 具体实现的函数</strong>了,这个函数至少要接受一个 void*  类型的参数，这个参数就是块本身。再下面的 descriptor 指向的就是 Block_descriptor 结构体，里面就是一些 Block 的信息。而在这些变量下面存放的就是 <strong>Block 捕获的那些变量</strong>。</p>
+<h3 id="块的类型"><a href="#块的类型" class="headerlink" title="块的类型"></a>块的类型</h3><p>在 OC 中一共有3种块，分别是：</p>
+<ul>
+<li>全局块，不会访问任何外部变量</li>
+<li>栈块，保存在栈中, 当函数退出后就会被销毁，通过copy可以复制到堆上</li>
+<li>堆块，保存在堆中</li>
+</ul>
+<p>我们在 MRC 的环境下运行下面的代码：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (^globalBlock)()  = ^&#123; <span class="built_in">NSLog</span>(<span class="string">@"global block"</span>); &#125;;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, globalBlock);</span><br><span class="line">        </span><br><span class="line"><span class="built_in">NSString</span> *str1 = <span class="string">@"stack block"</span>;</span><br><span class="line"><span class="keyword">void</span> (^stackBlcok)() = ^&#123; <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str1); &#125;;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, stackBlcok);</span><br><span class="line">    </span><br><span class="line"><span class="built_in">NSString</span> *str2 = <span class="string">@"malloc block"</span>;</span><br><span class="line"><span class="keyword">void</span> (^mallockBlock)() = [^&#123; <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str2); &#125; <span class="keyword">copy</span>];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, mallockBlock);</span><br></pre></td></tr></table></figure>
+<p>打印结果：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">50.676</span> BlockExample[<span class="number">1760</span>:<span class="number">28902</span>] &lt;__<span class="built_in">NSGlobalBlock__</span>: <span class="number">0x1000042b0</span>&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">50.677</span> BlockExample[<span class="number">1760</span>:<span class="number">28902</span>] &lt;__<span class="built_in">NSStackBlock__</span>: <span class="number">0x7fff5fbff790</span>&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">23</span>:<span class="number">50.677</span> BlockExample[<span class="number">1760</span>:<span class="number">28902</span>] &lt;__<span class="built_in">NSMallocBlock__</span>: <span class="number">0x100303fa0</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>结果和我们预期的结果是一样的。我们在换成 ARC 的环境下运行一次：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">26</span>:<span class="number">05.767</span> BlockExample[<span class="number">1805</span>:<span class="number">29822</span>] &lt;__<span class="built_in">NSGlobalBlock__</span>: <span class="number">0x1000052f0</span>&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">26</span>:<span class="number">05.768</span> BlockExample[<span class="number">1805</span>:<span class="number">29822</span>] &lt;__<span class="built_in">NSMallocBlock__</span>: <span class="number">0x100400340</span>&gt;</span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">26</span>:<span class="number">05.769</span> BlockExample[<span class="number">1805</span>:<span class="number">29822</span>] &lt;__<span class="built_in">NSMallocBlock__</span>: <span class="number">0x1004001b0</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>我们发现原来的栈块也变成了堆块。这是因为在把一个快赋值给一个strong对象时 ARC 会自动帮我们执行一次copy。如果我们直接这样，那么还是会打印出 __NSStackBlock :</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *str1 = <span class="string">@"stack block"</span>;</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, ^&#123; <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, str1); &#125;);</span><br><span class="line"><span class="comment">// 打印结果</span></span><br><span class="line"><span class="number">2016</span><span class="number">-03</span><span class="number">-13</span> <span class="number">16</span>:<span class="number">30</span>:<span class="number">06.180</span> BlockExample[<span class="number">1881</span>:<span class="number">32260</span>] &lt;__<span class="built_in">NSStackBlock__</span>: <span class="number">0x7fff5fbff798</span>&gt;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Block/" rel="tag">#Block</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" rel="next" title="Objective-C runtime 的简单理解与使用（二）">
+                <i class="fa fa-chevron-left"></i> Objective-C runtime 的简单理解与使用（二）
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/03/13/Objective-C-块（Block）的使用与理解/"
+           data-title="Objective-C 块（Block）的使用与理解" data-url="http://yoursite.com/2016/03/13/Objective-C-块（Block）的使用与理解/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Cyrus" />
+          <p class="site-author-name" itemprop="name">Cyrus</p>
+          <p class="site-description motion-element" itemprop="description">一个立志要成为iOS大神的男人🙇</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">4</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+          
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Hcy91425" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> github
+                  
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/u/5822241060" target="_blank">
+                  
+                    <i class="fa fa-globe"></i> weibo
+                  
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator">
+            <i class="fa fa-angle-double-up"></i>
+          </div>
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块的基础知识"><span class="nav-number">2.</span> <span class="nav-text">块的基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的声明"><span class="nav-number">2.1.</span> <span class="nav-text">块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的实现"><span class="nav-number">2.2.</span> <span class="nav-text">块的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的使用"><span class="nav-number">2.3.</span> <span class="nav-text">块的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-typedef-来简化块的声明"><span class="nav-number">2.4.</span> <span class="nav-text">用 typedef 来简化块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块能捕获在它声明范围里的所有变量"><span class="nav-number">2.5.</span> <span class="nav-text">块能捕获在它声明范围里的所有变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-block-修饰变量，可以在块中修改变量的值"><span class="nav-number">2.6.</span> <span class="nav-text">用 __block 修饰变量，可以在块中修改变量的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小心产生循环引用"><span class="nav-number">2.7.</span> <span class="nav-text">小心产生循环引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块的本质"><span class="nav-number">3.</span> <span class="nav-text">块的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的结构"><span class="nav-number">3.1.</span> <span class="nav-text">块的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的类型"><span class="nav-number">3.2.</span> <span class="nav-text">块的类型</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cyrus</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+
+  
+
+
+
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=0.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=0.5.0"></script>
+
+
+
+  
+  
+
+  
+  
+<script type="text/javascript" src="/js/src/scrollspy.js?v=0.5.0"></script>
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 1 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = NexT.utils.escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    NexT.motion.middleWares.sidebar = function () {
+      var $tocContent = $('.post-toc-content');
+
+      if (CONFIG.scheme !== 'Pisces' && (CONFIG.sidebar.display === 'post' || CONFIG.sidebar.display === 'always')) {
+        if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+          NexT.utils.displaySidebar();
+        }
+      }
+    };
+  });
+</script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=0.5.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"cyrusblog"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+  
+
+
+
+
+
+  
+  
+  
+
+  
+
+
+</body>
+</html>
