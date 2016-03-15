@@ -437,7 +437,7 @@
       
         
           <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
-<p>在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
+<p>在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
 <h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
 <p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
 <p>与关联对象相关的函数有三个：</p>
@@ -581,7 +581,7 @@
 <p>一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 runtime ，官方文档还没有看过，希望以后能够补上。如果有什么理解的不对的地方，希望大家指出。😆</p>
 <h2 id="Objective-C中的消息分发"><a href="#Objective-C中的消息分发" class="headerlink" title="Objective-C中的消息分发"></a>Objective-C中的消息分发</h2><hr>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
-<p>这是我们在 OC 中调用方法的方式， 但其实这应该称作<strong>“传递消息”（pass a message）</strong>，给 someObject 对象传递一个 doSomething的消息。因为这行代码在编译时会变成这样：</p>
+<p>这是我们在 Objective-C 中调用方法的方式， 但其实这应该称作<strong>“传递消息”（pass a message）</strong>，给 someObject 对象传递一个 doSomething的消息。因为这行代码在编译时会变成这样：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(someObject, <span class="keyword">@selector</span>(doSomething))</span><br></pre></td></tr></table></figure>
 <p>这是个 C 函数， 声明在 objc/message.h 头文件中，它接受两个及以上的可变参数, 第一个参数代表的是消息的接收者，第二个参数代表选择子（<a href="#selector">selector，在后面我们会细说</a>），如果要调用的方法还有别的参数，就会跟在这两个参数后面。还有其他几个类似的函数，来处理不同的情况：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span> objc_msgSend(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 直接发送消息</span></span><br><span class="line"><span class="keyword">id</span> objc_msgSendSuper(<span class="keyword">struct</span> objc_super *<span class="keyword">super</span>, SEL op, ...)	<span class="comment">// 给父类发送消息</span></span><br><span class="line"><span class="keyword">void</span> objc_msgSend_stret(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 返回值是结构体时，可以交给这个函数处理</span></span><br><span class="line"><span class="keyword">double</span> objc_msgSend_fpret(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 返回值是浮点数时，可以交给这个函数处理</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure>

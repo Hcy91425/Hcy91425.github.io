@@ -58,31 +58,31 @@
 
 
 <meta name="description" content="写在前面
-在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
 关联对象（Associated Object）
 关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
 与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id object, co">
+123objc_setAssociatedObject(id o">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Objective-C runtime 的简单理解与使用（二）">
 <meta property="og:url" content="http://yoursite.com/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
 <meta property="og:description" content="写在前面
-在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
 关联对象（Associated Object）
 关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
 与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id object, co">
+123objc_setAssociatedObject(id o">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
-<meta property="og:updated_time" content="2016-03-12T07:09:06.000Z">
+<meta property="og:updated_time" content="2016-03-15T02:59:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C runtime 的简单理解与使用（二）">
 <meta name="twitter:description" content="写在前面
-在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
+在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
 关联对象（Associated Object）
 关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
 与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id object, co">
+123objc_setAssociatedObject(id o">
 <meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
 
 
@@ -325,7 +325,7 @@
 
       
         <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
-<p>在我们知道了 OC 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
+<p>在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
 <h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
 <p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
 <p>与关联对象相关的函数有三个：</p>
@@ -392,7 +392,7 @@
 <p>需要注意的是我们还要重写- methodSignatureForSelector: 方法，因为生成 NSInvocation 对象会调用到这个方法，否则会抛出异常。关于 forwardInvocation 了解的还不是很多，所以例子比较简单，以后有了更深的理解后会再加上。</p>
 <h3 id="消息转发的全过程"><a href="#消息转发的全过程" class="headerlink" title="消息转发的全过程"></a>消息转发的全过程</h3><p><img src="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png" alt=""></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
-<p>到这里对于 runtime 的简单理解与使用就基本结束了。总的来说，理解了 OC 的运行时会让我们的代码更加灵活，当然也会增大维护的难度。不过想要学好 OC 这门语言，runtime 是必不可少的！</p>
+<p>到这里对于 runtime 的简单理解与使用就基本结束了。总的来说，理解了 Objective-C 的运行时会让我们的代码更加灵活，当然也会增大维护的难度。不过想要学好 Objective-C 这门语言，runtime 是必不可少的！</p>
 
       
     </div>
@@ -441,28 +441,24 @@
 
     <div class="post-spread">
       
-        <!-- JiaThis Button BEGIN -->
-<div class="jiathis_style">
-  <a class="jiathis_button_tsina"></a>
-  <a class="jiathis_button_tqq"></a>
-  <a class="jiathis_button_weixin"></a>
-  <a class="jiathis_button_cqq"></a>
-  <a class="jiathis_button_douban"></a>
-  <a class="jiathis_button_renren"></a>
-  <a class="jiathis_button_qzone"></a>
-  <a class="jiathis_button_kaixin001"></a>
-  <a class="jiathis_button_copy"></a>
-  <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank"></a>
-  <a class="jiathis_counter_style"></a>
-</div>
-<script type="text/javascript" >
-  var jiathis_config={
-    hideMore:false
-  }
-</script>
-<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script>
-<!-- JiaThis Button END -->
+        <div class="ds-share flat" data-thread-key="2016/03/11/Objective-C-runtime-的简单理解与使用（二）/"
+     data-title="Objective-C runtime 的简单理解与使用（二）"
+     data-content=""
+     data-url="http://yoursite.com/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/">
+  <div class="ds-share-inline">
+    <ul  class="ds-share-icons-16">
 
+      <li data-toggle="ds-share-icons-more"><a class="ds-more" href="javascript:void(0);">分享到：</a></li>
+      <li><a class="ds-weibo" href="javascript:void(0);" data-service="weibo">微博</a></li>
+      <li><a class="ds-qzone" href="javascript:void(0);" data-service="qzone">QQ空间</a></li>
+      <li><a class="ds-qqt" href="javascript:void(0);" data-service="qqt">腾讯微博</a></li>
+      <li><a class="ds-wechat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+
+    </ul>
+    <div class="ds-share-icons-more">
+    </div>
+  </div>
+</div>
       
     </div>
   </div>
