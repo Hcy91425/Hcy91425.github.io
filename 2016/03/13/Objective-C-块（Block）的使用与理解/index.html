@@ -57,30 +57,19 @@
 
 
 
-<meta name="description" content="写在前面
-块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
-块的基础知识
-块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
-12// returnType (^blockName) (parameters)int">
+<meta name="description" content="块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Objective-C 块（Block）的使用与理解">
 <meta property="og:url" content="http://yoursite.com/2016/03/13/Objective-C-块（Block）的使用与理解/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
-<meta property="og:description" content="写在前面
-块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
-块的基础知识
-块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
-12// returnType (^blockName) (parameters)int">
+<meta property="og:description" content="块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。">
+<meta property="og:image" content="http://7xrad5.com1.z0.glb.clouddn.com/heading_block.png">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png">
-<meta property="og:updated_time" content="2016-03-13T08:46:58.000Z">
+<meta property="og:updated_time" content="2016-03-16T04:13:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C 块（Block）的使用与理解">
-<meta name="twitter:description" content="写在前面
-块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。
-块的基础知识
-块的声明块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。
-12// returnType (^blockName) (parameters)int">
-<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E5%BE%AA%E7%8E%AF%E5%BC%95%E7%94%A8.png">
+<meta name="twitter:description" content="块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。">
+<meta name="twitter:image" content="http://7xrad5.com1.z0.glb.clouddn.com/heading_block.png">
 
 
 
@@ -321,15 +310,16 @@
       
 
       
-        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+        <p><div align="center"><img src="http://7xrad5.com1.z0.glb.clouddn.com/heading_block.png"></div></p>
+<hr>
 <p>块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。</p>
+<a id="more"></a>
 <h2 id="块的基础知识"><a href="#块的基础知识" class="headerlink" title="块的基础知识"></a>块的基础知识</h2><hr>
 <h3 id="块的声明"><a href="#块的声明" class="headerlink" title="块的声明"></a>块的声明</h3><p>块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// returnType (^blockName) (parameters)</span></span><br><span class="line"><span class="keyword">int</span> (^someBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
 <h3 id="块的实现"><a href="#块的实现" class="headerlink" title="块的实现"></a>块的实现</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ^returnType(parameters)&#123;/*code*/&#125;;</span></span><br><span class="line">^<span class="keyword">int</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <p>其中返回值是可以省略的,它可以自动判断，如果参数也是空的话我们可以简化成这样：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
 <h3 id="块的使用"><a href="#块的使用" class="headerlink" title="块的使用"></a>块的使用</h3><p>块的使用就像使用 C 函数一样</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">someBlock（<span class="number">1</span>，<span class="number">2</span>）;</span><br></pre></td></tr></table></figure>
 <h3 id="用-typedef-来简化块的声明"><a href="#用-typedef-来简化块的声明" class="headerlink" title="用 typedef 来简化块的声明"></a>用 typedef 来简化块的声明</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">int</span> (^CYAddBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br><span class="line">CYAddBlock addBlock = ^(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br><span class="line">addBlock(<span class="number">1</span>,<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
@@ -561,7 +551,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块的基础知识"><span class="nav-number">2.</span> <span class="nav-text">块的基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的声明"><span class="nav-number">2.1.</span> <span class="nav-text">块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的实现"><span class="nav-number">2.2.</span> <span class="nav-text">块的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的使用"><span class="nav-number">2.3.</span> <span class="nav-text">块的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-typedef-来简化块的声明"><span class="nav-number">2.4.</span> <span class="nav-text">用 typedef 来简化块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块能捕获在它声明范围里的所有变量"><span class="nav-number">2.5.</span> <span class="nav-text">块能捕获在它声明范围里的所有变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-block-修饰变量，可以在块中修改变量的值"><span class="nav-number">2.6.</span> <span class="nav-text">用 __block 修饰变量，可以在块中修改变量的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小心产生循环引用"><span class="nav-number">2.7.</span> <span class="nav-text">小心产生循环引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块的本质"><span class="nav-number">3.</span> <span class="nav-text">块的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的结构"><span class="nav-number">3.1.</span> <span class="nav-text">块的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的类型"><span class="nav-number">3.2.</span> <span class="nav-text">块的类型</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#块的基础知识"><span class="nav-number">1.</span> <span class="nav-text">块的基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的声明"><span class="nav-number">1.1.</span> <span class="nav-text">块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的实现"><span class="nav-number">1.2.</span> <span class="nav-text">块的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的使用"><span class="nav-number">1.3.</span> <span class="nav-text">块的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-typedef-来简化块的声明"><span class="nav-number">1.4.</span> <span class="nav-text">用 typedef 来简化块的声明</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块能捕获在它声明范围里的所有变量"><span class="nav-number">1.5.</span> <span class="nav-text">块能捕获在它声明范围里的所有变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用-block-修饰变量，可以在块中修改变量的值"><span class="nav-number">1.6.</span> <span class="nav-text">用 __block 修饰变量，可以在块中修改变量的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小心产生循环引用"><span class="nav-number">1.7.</span> <span class="nav-text">小心产生循环引用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#块的本质"><span class="nav-number">2.</span> <span class="nav-text">块的本质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块的结构"><span class="nav-number">2.1.</span> <span class="nav-text">块的结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#块的类型"><span class="nav-number">2.2.</span> <span class="nav-text">块的类型</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">

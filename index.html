@@ -312,14 +312,9 @@
 
       
         
-          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+          <p><div align="center"><img src="http://7xrad5.com1.z0.glb.clouddn.com/heading_block.png"></div></p>
+<hr>
 <p>块（Block）是在 iOS 开发中很常用的一个工具，它可以使我们代码的业务逻辑更加的紧凑。本文会分两部分来讲块，第一部分是块的基础知识，第二部分是对块的本质的一些理解。</p>
-<h2 id="块的基础知识"><a href="#块的基础知识" class="headerlink" title="块的基础知识"></a>块的基础知识</h2><hr>
-<h3 id="块的声明"><a href="#块的声明" class="headerlink" title="块的声明"></a>块的声明</h3><p>块的声明类似于函数指针，只不过把 * 换成了 ^ 。声明时最前面是返回类型，中间是块名，最后是参数类型。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// returnType (^blockName) (parameters)</span></span><br><span class="line"><span class="keyword">int</span> (^someBlock) (<span class="keyword">int</span>, <span class="keyword">int</span>);</span><br></pre></td></tr></table></figure>
-<h3 id="块的实现"><a href="#块的实现" class="headerlink" title="块的实现"></a>块的实现</h3><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ^returnType(parameters)&#123;/*code*/&#125;;</span></span><br><span class="line">^<span class="keyword">int</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">	<span class="keyword">return</span> a+b;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>其中返回值是可以省略的,它可以自动判断，如果参数也是空的话我们可以简化成这样：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">^&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/03/13/Objective-C-块（Block）的使用与理解/" rel="contents">
               阅读全文 &raquo;
@@ -436,31 +431,9 @@
 
       
         
-          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+          <p><div align="center"><img src="http://7xrad5.com1.z0.glb.clouddn.com/heading_runtime2.png"></div></p>
+<hr>
 <p>在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
-<h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
-<p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
-<p>与关联对象相关的函数有三个：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy);</span><br><span class="line">objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">const</span> <span class="keyword">void</span> *key);</span><br><span class="line">objc_removeAssociatedObjects(<span class="keyword">id</span> object);</span><br></pre></td></tr></table></figure>
-<p>从函数名我们也可以看出来，这三个函数分别是用来设置，获取和移除关联对象的。这里要解释一下的是他们的参数。</p>
-<ul>
-<li>第一个参数 id object 显然就是你要设置关联对象的那个对象。</li>
-<li>第二个参数 const void *key 就是用来区分不同的关联对象的 key，因为想让两个 key 匹配到同一个关联对象就必须是完全相等的指针，所以我们一般用静态全局变量来作为 key。</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">void</span> *AssociatedKey = <span class="string">"AssociatedKey"</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第三个参数 id value 就是要关联的对象了。</li>
-<li>第四个参数 objc_AssociationPolicy policy 指的是关联对象的存储策略，它是一个枚举，可以与 property 的 attribute 相对应：</li>
-</ul>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> OBJC_ENUM(uintptr_t, objc_AssociationPolicy) &#123;</span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_ASSIGN</span> = <span class="number">0</span>,						 <span class="comment">// assign</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN_NONATOMIC</span> = <span class="number">1</span>,			   <span class="comment">// nonatomic, retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span> = <span class="number">3</span>,				 <span class="comment">// nonatomic, copy</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_RETAIN</span> = <span class="number">01401</span>,					 <span class="comment">// retain</span></span><br><span class="line">	OBJC_ASSO<span class="built_in">CIATION_COPY</span> = <span class="number">01403</span>						<span class="comment">// copy</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>大家知道，在 category 中，我们无法添加 property，因为无法添加实例变量。那么，我们现在就可以通过关联对象来实现在 category 中添加属性的功能了。</p>
-<p>我们现在 CYClass 类的拓展中声明了一个属性</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>)<span class="built_in">NSString</span> *aString;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>如果这个时候我们直接在外部访问这个属性， 那个程序是会 crash 的，不信你可以试试😅，编译器会说：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'-[CYClass setAString:]: unrecognized selector sent to instance 0x1001060a0'</span><br></pre></td></tr></table></figure>
-<p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/" rel="contents">
               阅读全文 &raquo;
@@ -577,15 +550,10 @@
 
       
         
-          <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+          <div align="center"><img src="http://7xrad5.com1.z0.glb.clouddn.com/heading_runtime1.png"></div>
+
+<hr>
 <p>一开始接触 iOS 的时候，学的是 Swift。还有一个学期就大四，为了实习，也为了更好的理解 iOS，最近一个多月开始正式学习 Objective-C。而 runtime “运行时” 应该算是 Objective-C 的核心所在。我觉得有必要好好来理解一下 runtime。学的还不是很精，主要是通过看别人的博客和《Effective Objective-C 2.0》这本书来学习 runtime ，官方文档还没有看过，希望以后能够补上。如果有什么理解的不对的地方，希望大家指出。😆</p>
-<h2 id="Objective-C中的消息分发"><a href="#Objective-C中的消息分发" class="headerlink" title="Objective-C中的消息分发"></a>Objective-C中的消息分发</h2><hr>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[someObject doSomething];</span><br></pre></td></tr></table></figure>
-<p>这是我们在 Objective-C 中调用方法的方式， 但其实这应该称作<strong>“传递消息”（pass a message）</strong>，给 someObject 对象传递一个 doSomething的消息。因为这行代码在编译时会变成这样：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend(someObject, <span class="keyword">@selector</span>(doSomething))</span><br></pre></td></tr></table></figure>
-<p>这是个 C 函数， 声明在 objc/message.h 头文件中，它接受两个及以上的可变参数, 第一个参数代表的是消息的接收者，第二个参数代表选择子（<a href="#selector">selector，在后面我们会细说</a>），如果要调用的方法还有别的参数，就会跟在这两个参数后面。还有其他几个类似的函数，来处理不同的情况：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span> objc_msgSend(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 直接发送消息</span></span><br><span class="line"><span class="keyword">id</span> objc_msgSendSuper(<span class="keyword">struct</span> objc_super *<span class="keyword">super</span>, SEL op, ...)	<span class="comment">// 给父类发送消息</span></span><br><span class="line"><span class="keyword">void</span> objc_msgSend_stret(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 返回值是结构体时，可以交给这个函数处理</span></span><br><span class="line"><span class="keyword">double</span> objc_msgSend_fpret(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)	<span class="comment">// 返回值是浮点数时，可以交给这个函数处理</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-<p>当我们向一个对象发送一个消息时，它会在这个对象的类中根据 selector 找到真正的实现函数，如果找不到就再到它的父类中找，一层一层的找上去，最后到 NSObject 类中， 如果还没有找到，那么就会启用“消息转发机制”。这个我们以后再提。<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/2016/03/10/Objective-C-runtime-的简单理解与使用（一）/" rel="contents">
               阅读全文 &raquo;

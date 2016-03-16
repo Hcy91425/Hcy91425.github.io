@@ -57,33 +57,19 @@
 
 
 
-<meta name="description" content="写在前面
-在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
-关联对象（Associated Object）
-关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
-与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id o">
+<meta name="description" content="在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Objective-C runtime 的简单理解与使用（二）">
 <meta property="og:url" content="http://yoursite.com/2016/03/11/Objective-C-runtime-的简单理解与使用（二）/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
-<meta property="og:description" content="写在前面
-在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
-关联对象（Associated Object）
-关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
-与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id o">
+<meta property="og:description" content="在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。">
+<meta property="og:image" content="http://7xrad5.com1.z0.glb.clouddn.com/heading_runtime2.png">
 <meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
-<meta property="og:updated_time" content="2016-03-15T02:59:33.000Z">
+<meta property="og:updated_time" content="2016-03-16T04:12:30.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C runtime 的简单理解与使用（二）">
-<meta name="twitter:description" content="写在前面
-在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。
-关联对象（Associated Object）
-关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。
-与关联对象相关的函数有三个：
-123objc_setAssociatedObject(id o">
-<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/%E6%B6%88%E6%81%AF%E8%BD%AC%E5%8F%91.png">
+<meta name="twitter:description" content="在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。">
+<meta name="twitter:image" content="http://7xrad5.com1.z0.glb.clouddn.com/heading_runtime2.png">
 
 
 
@@ -324,8 +310,10 @@
       
 
       
-        <h2 id="写在前面"><a href="#写在前面" class="headerlink" title="写在前面"></a>写在前面</h2><hr>
+        <p><div align="center"><img src="http://7xrad5.com1.z0.glb.clouddn.com/heading_runtime2.png"></div></p>
+<hr>
 <p>在我们知道了 Objective-C 中类的本质，以及它的消息分发机制后，我们就可以来看看那些与 runtime 相关的的函数了。当然，我们只会讲比较常见的那些。</p>
+<a id="more"></a>
 <h2 id="关联对象（Associated-Object）"><a href="#关联对象（Associated-Object）" class="headerlink" title="关联对象（Associated Object）"></a>关联对象（Associated Object）</h2><hr>
 <p>关联对象，顾名思义，就是给某对象关联许多其他的对象。这些对象通过 key 来区分。</p>
 <p>与关联对象相关的函数有三个：</p>
@@ -348,7 +336,7 @@
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'-[CYClass setAString:]: unrecognized selector sent to instance 0x1001060a0'</span><br></pre></td></tr></table></figure>
 <p>所以我们给它加上 setter 和 getter 方法， 并且在这两个方法中给它设置关联对象：</p>
 <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> *aStringKey = <span class="string">"aStringKey"</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">CYClass</span> (<span class="title">Property</span>)</span></span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)setAString:(<span class="built_in">NSString</span> *)newString&#123;</span><br><span class="line">	objc_setAssociatedObject(<span class="keyword">self</span>, aStringKey, newString, OBJC_ASSO<span class="built_in">CIATION_COPY_NONATOMIC</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="built_in">NSString</span> *)aString&#123;</span><br><span class="line">	<span class="keyword">return</span> objc_getAssociatedObject(<span class="keyword">self</span>, aStringKey);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
-<p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br><a id="more"></a></p>
+<p>现在我们再进行读写操作，程序就不会 crash 了。当然，没有必要的情况下，还是不要滥用关联对象， 否则有可能会出现一些难以发现的bug。<br><!-- more --></p>
 <h2 id="方法调配（Method-Swizzling）"><a href="#方法调配（Method-Swizzling）" class="headerlink" title="方法调配（Method Swizzling）"></a>方法调配（Method Swizzling）</h2><hr>
 <p>在前一篇博客中我们知道了每个类中的方法是以 objc_method 结构体的形式放在 methodLists 中的。每一个 selector 对应了一个实现的函数的指针 IMP。而 method swizzling 技术就是通过交换这个函数指针来实现的。</p>
 <p>我们最好在 +load 方法中使用 method swizzling，因为 +load 方法对于加入运行期中的每个类及分类都会调用且只调用一次。所以在这里交换方法是最安全的。</p>
@@ -589,7 +577,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面"><span class="nav-number">1.</span> <span class="nav-text">写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关联对象（Associated-Object）"><span class="nav-number">2.</span> <span class="nav-text">关联对象（Associated Object）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调配（Method-Swizzling）"><span class="nav-number">3.</span> <span class="nav-text">方法调配（Method Swizzling）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息转发机制（Message-Forwarding）"><span class="nav-number">4.</span> <span class="nav-text">消息转发机制（Message Forwarding）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态方法解析（dynamic-method-resolution）"><span class="nav-number">4.1.</span> <span class="nav-text">动态方法解析（dynamic method resolution）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整的消息转发机制"><span class="nav-number">4.2.</span> <span class="nav-text">完整的消息转发机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息转发的全过程"><span class="nav-number">4.3.</span> <span class="nav-text">消息转发的全过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关联对象（Associated-Object）"><span class="nav-number">1.</span> <span class="nav-text">关联对象（Associated Object）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调配（Method-Swizzling）"><span class="nav-number">2.</span> <span class="nav-text">方法调配（Method Swizzling）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消息转发机制（Message-Forwarding）"><span class="nav-number">3.</span> <span class="nav-text">消息转发机制（Message Forwarding）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#动态方法解析（dynamic-method-resolution）"><span class="nav-number">3.1.</span> <span class="nav-text">动态方法解析（dynamic method resolution）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完整的消息转发机制"><span class="nav-number">3.2.</span> <span class="nav-text">完整的消息转发机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#消息转发的全过程"><span class="nav-number">3.3.</span> <span class="nav-text">消息转发的全过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
