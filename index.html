@@ -246,6 +246,132 @@
             
               
                 
+                <a class="post-title-link" href="/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/" itemprop="url">
+                  iOS 转场时 appear 与 disappear 的调用顺序探索
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-04-06T21:41:52+08:00" content="2016-04-06">
+              2016-04-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/UIKit-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">UIKit 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p><img src = "http://7xrpns.com1.z0.glb.clouddn.com/heading-Appear&Disappear.png"></p>
+<p>最近几天看了好多人的面经，时不时就看到一个问题：</p>
+<blockquote>
+<p>在A页面跳转到B页面的过程中 A 的 viewDidDisappear 方法和 B 的 viewDidAppear 谁先调用？</p>
+</blockquote>
+<p>其实我以前一直理所当然的认为它们的顺序就是 <code>A-viewDidDisappear</code>  –&gt; <code>B-viewDidAppear</code>，至于为什么会这么想，就是感觉<img src="http://7xs81e.com1.z0.glb.clouddn.com/%E4%B8%80%E8%84%B8%E6%87%B5%E9%80%BC.png", width = 40></p>
+<p>今天写了个Demo去测试了一下，发现完全不是自己想象的那样，每一种转场(Push,Present，TabBar切换)都是不一样的。</p>
+<blockquote>
+<p><a href="https://github.com/Hcy91425/Demo/tree/master/Appear%26Disappear-Sample">Demo 地址 Appear&amp;Disappear-Sample</a></p>
+</blockquote>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/03/24/初次接触-RunLoop/" itemprop="url">
                   初次接触 RunLoop
                 </a>
@@ -963,7 +1089,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -980,7 +1106,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

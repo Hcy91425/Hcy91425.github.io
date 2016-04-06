@@ -41,7 +41,7 @@
 <link href="/css/main.css?v=0.5.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="viewDidAppear," />
 
 
 
@@ -59,19 +59,35 @@
 
 
 
-<meta name="description" content="花了一个晚上加上一个上午的时间，终于把自己的博客搭起来了。以后要好好学习， 认真的写博客了。
-嗯， 第一篇博客就是这么简短，拜拜~ 😆">
+<meta name="description" content="最近几天看了好多人的面经，时不时就看到一个问题：
+
+在A页面跳转到B页面的过程中 A 的 viewDidDisappear 方法和 B 的 viewDidAppear 谁先调用？
+
+其实我以前一直理所当然的认为它们的顺序就是 A-viewDidDisappear  –&amp;gt; B-viewDidAppear，至于为什么会这么想，就是感觉
+今天写了个Demo去测试了一下，发现完全不是自己想象的那样">
 <meta property="og:type" content="article">
-<meta property="og:title" content="第一篇博客">
-<meta property="og:url" content="http://yoursite.com/2016/03/10/第一篇博客/index.html">
+<meta property="og:title" content="iOS 转场时 appear 与 disappear 的调用顺序探索">
+<meta property="og:url" content="http://yoursite.com/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
-<meta property="og:description" content="花了一个晚上加上一个上午的时间，终于把自己的博客搭起来了。以后要好好学习， 认真的写博客了。
-嗯， 第一篇博客就是这么简短，拜拜~ 😆">
-<meta property="og:updated_time" content="2016-03-18T01:47:35.000Z">
+<meta property="og:description" content="最近几天看了好多人的面经，时不时就看到一个问题：
+
+在A页面跳转到B页面的过程中 A 的 viewDidDisappear 方法和 B 的 viewDidAppear 谁先调用？
+
+其实我以前一直理所当然的认为它们的顺序就是 A-viewDidDisappear  –&amp;gt; B-viewDidAppear，至于为什么会这么想，就是感觉
+今天写了个Demo去测试了一下，发现完全不是自己想象的那样">
+<meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/heading-Appear&Disappear.png">
+<meta property="og:image" content="http://7xs81e.com1.z0.glb.clouddn.com/%E4%B8%80%E8%84%B8%E6%87%B5%E9%80%BC.png">
+<meta property="og:image" content="http://7xs81e.com1.z0.glb.clouddn.com/%E4%B8%80%E8%84%B8%E6%87%B5%E9%80%BC.png">
+<meta property="og:updated_time" content="2016-04-06T13:43:16.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第一篇博客">
-<meta name="twitter:description" content="花了一个晚上加上一个上午的时间，终于把自己的博客搭起来了。以后要好好学习， 认真的写博客了。
-嗯， 第一篇博客就是这么简短，拜拜~ 😆">
+<meta name="twitter:title" content="iOS 转场时 appear 与 disappear 的调用顺序探索">
+<meta name="twitter:description" content="最近几天看了好多人的面经，时不时就看到一个问题：
+
+在A页面跳转到B页面的过程中 A 的 viewDidDisappear 方法和 B 的 viewDidAppear 谁先调用？
+
+其实我以前一直理所当然的认为它们的顺序就是 A-viewDidDisappear  –&amp;gt; B-viewDidAppear，至于为什么会这么想，就是感觉
+今天写了个Demo去测试了一下，发现完全不是自己想象的那样">
+<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/heading-Appear&Disappear.png">
 
 
 
@@ -89,7 +105,7 @@
   };
 </script>
 
-  <title> 第一篇博客 | Cyrus' blog </title>
+  <title> iOS 转场时 appear 与 disappear 的调用顺序探索 | Cyrus' blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -247,7 +263,7 @@
             
             
               
-                第一篇博客
+                iOS 转场时 appear 与 disappear 的调用顺序探索
               
             
           </h1>
@@ -259,19 +275,38 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-03-10T11:04:16+08:00" content="2016-03-10">
-              2016-03-10
+            <time itemprop="dateCreated" datetime="2016-04-06T21:41:52+08:00" content="2016-04-06">
+              2016-04-06
             </time>
           </span>
 
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/UIKit-学习/" itemprop="url" rel="index">
+                    <span itemprop="name">UIKit 学习</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
           
 
           
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/03/10/第一篇博客/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/03/10/第一篇博客/" itemprop="commentsCount"></span>
+                <a href="/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -293,8 +328,47 @@
       
 
       
-        <p>花了一个晚上加上一个上午的时间，终于把自己的博客搭起来了。以后要好好学习， 认真的写博客了。</p>
-<p>嗯， 第一篇博客就是这么简短，拜拜~ 😆</p>
+        <p><img src="http://7xrpns.com1.z0.glb.clouddn.com/heading-Appear&Disappear.png"></p>
+<p>最近几天看了好多人的面经，时不时就看到一个问题：</p>
+<blockquote>
+<p>在A页面跳转到B页面的过程中 A 的 viewDidDisappear 方法和 B 的 viewDidAppear 谁先调用？</p>
+</blockquote>
+<p>其实我以前一直理所当然的认为它们的顺序就是 <code>A-viewDidDisappear</code>  –&gt; <code>B-viewDidAppear</code>，至于为什么会这么想，就是感觉<img src="http://7xs81e.com1.z0.glb.clouddn.com/%E4%B8%80%E8%84%B8%E6%87%B5%E9%80%BC.png" ,="" width="40"></p>
+<p>今天写了个Demo去测试了一下，发现完全不是自己想象的那样，每一种转场(Push,Present，TabBar切换)都是不一样的。</p>
+<blockquote>
+<p><a href="https://github.com/Hcy91425/Demo/tree/master/Appear%26Disappear-Sample" target="_blank" rel="external">Demo 地址 Appear&amp;Disappear-Sample</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><hr>
+<p>我自定义了两个类，继承自UIViewController，为了方便观察分别叫做<code>A_ViewController</code>,<code>B_ViewController</code>，然后重写了一系列 <code>appear</code> 和 <code>disappear</code> 方法。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewWillAppear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewWillAppear:animated];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"A  view will appear    %@"</span>,<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidAppear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidAppear:animated];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"A  view did  appear    %@"</span>,<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewWillDisappear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewWillDisappear:animated];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"A  view will disappear %@"</span>,<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidDisappear:(<span class="built_in">BOOL</span>)animated &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidDisappear: animated];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"A  view did  disappear %@"</span>,<span class="keyword">self</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后分别用 push， present， 以及 tabbar 的切换来测试，然后查看打印的结果。</p>
+<h3 id="Push-amp-Pop"><a href="#Push-amp-Pop" class="headerlink" title="Push &amp; Pop"></a>Push &amp; Pop</h3><hr>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">--------------------------PUSH-----------------------------</span><br><span class="line"></span><br><span class="line"> A  view will disappear &lt;A_ViewController: <span class="number">0x7fa11067a730</span>&gt;</span><br><span class="line"> B  view will appear    &lt;B_ViewController: <span class="number">0x7fa110516530</span>&gt;</span><br><span class="line"> A  view did  disappear &lt;A_ViewController: <span class="number">0x7fa11067a730</span>&gt;</span><br><span class="line"> B  view did  appear    &lt;B_ViewController: <span class="number">0x7fa110516530</span>&gt;</span><br><span class="line"></span><br><span class="line">--------------------------POP-----------------------------</span><br><span class="line"></span><br><span class="line"> B  view will disappear &lt;B_ViewController: <span class="number">0x7fa110516530</span>&gt;</span><br><span class="line"> A  view will appear    &lt;A_ViewController: <span class="number">0x7fa11067a730</span>&gt;</span><br><span class="line"> B  view did  disappear &lt;B_ViewController: <span class="number">0x7fa110516530</span>&gt;</span><br><span class="line"> A  view did  appear    &lt;A_ViewController: <span class="number">0x7fa11067a730</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>在这里的调用顺序是和我之前预想的一样的，也就是 </p>
+<p><code>A-willDisappear</code> –&gt; <code>B-willAppear</code> –&gt; <code>A-didDisappear</code> –&gt; <code>B-didAppear</code></p>
+<h3 id="Present-amp-Dismiss"><a href="#Present-amp-Dismiss" class="headerlink" title="Present &amp; Dismiss"></a>Present &amp; Dismiss</h3><hr>
+<p>在模态的转场中就有一些不一样的事了。我们知道模态转场有好多种style，其中有两种我们需要特别注意的<code>UIModalPresentationCustom</code>,<code>UIModalPresentationOverFullScreen</code>。我们先看一下除了这两种style以外的转场，他们的调用顺序是怎样的。</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">-----------------------NormalPresent------------------------</span><br><span class="line"></span><br><span class="line"> A  view will disappear &lt;A_ViewController: <span class="number">0x7fc2a14ac490</span>&gt;</span><br><span class="line"> B  view will appear    &lt;B_ViewController: <span class="number">0x7fc2a152a880</span>&gt;</span><br><span class="line"> B  view did  appear    &lt;B_ViewController: <span class="number">0x7fc2a152a880</span>&gt;</span><br><span class="line"> A  view did  disappear &lt;A_ViewController: <span class="number">0x7fc2a14ac490</span>&gt;</span><br><span class="line"></span><br><span class="line">-------------------------DISMISS----------------------------</span><br><span class="line"></span><br><span class="line"> B  view will disappear &lt;B_ViewController: <span class="number">0x7fc2a152a880</span>&gt;</span><br><span class="line"> A  view will appear    &lt;A_ViewController: <span class="number">0x7fc2a14ac490</span>&gt;</span><br><span class="line"> A  view did  appear    &lt;A_ViewController: <span class="number">0x7fc2a14ac490</span>&gt;</span><br><span class="line"> B  view did  disappear &lt;B_ViewController: <span class="number">0x7fc2a152a880</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>这里其实已经和push的转场不一样了。普通模态的转场的顺序是这样的</p>
+<p><code>A-willDisappear</code> –&gt; <code>B-willAppear</code> –&gt; <code>B-didAppear</code> –&gt; <code>A-didDisappear</code></p>
+<p>再看看前面提到的那两种特殊的模态转场。因为在这两种方式的转场下A的view是不会消失的，所以所有与A有关的 appear 或 disappear 方法都不会被调用</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-----------------------CustomPresent------------------------</span><br><span class="line"></span><br><span class="line"> B  view will appear    &lt;B_ViewController: <span class="number">0x7f960249bac0</span>&gt;</span><br><span class="line"> B  view did  appear    &lt;B_ViewController: <span class="number">0x7f960249bac0</span>&gt;</span><br><span class="line"></span><br><span class="line">-------------------------DISMISS----------------------------</span><br><span class="line"></span><br><span class="line"> B  view will disappear &lt;B_ViewController: <span class="number">0x7f960249bac0</span>&gt;</span><br><span class="line"> B  view did  disappear &lt;B_ViewController: <span class="number">0x7f960249bac0</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>所以在这两种style下只有<code>B-willAppear</code> –&gt; <code>B-didAppear</code></p>
+<h3 id="TabBar切换"><a href="#TabBar切换" class="headerlink" title="TabBar切换"></a>TabBar切换</h3><hr>
+<p>TabBar 的切换也是一个很神奇的顺序</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">B  view will appear    &lt;B_ViewController: <span class="number">0x7f88cbed7160</span>&gt;</span><br><span class="line">A  view will disappear &lt;A_ViewController: <span class="number">0x7f88cbed6680</span>&gt;</span><br><span class="line">A  view did  disappear &lt;A_ViewController: <span class="number">0x7f88cbed6680</span>&gt;</span><br><span class="line">B  view did  appear    &lt;B_ViewController: <span class="number">0x7f88cbed7160</span>&gt;</span><br></pre></td></tr></table></figure>
+<p>与push不同的是，TabBar下，会先调用 B 的 willAppear，再调用 A 的 willDisappear</p>
+<p>所以TabBar的顺序是这样的：</p>
+<p><code>B-willAppear</code> –&gt; <code>A-willDisappear</code> –&gt; <code>A-didDisappear</code> –&gt; <code>B-didAppear</code></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><hr>
+<p>在每一种转场下，appear 与 disappear 都有一些不一样的顺序，一定要分清楚，不能一概而论。</p>
+<p>Push： <code>A-willDisappear</code>–&gt;<code>B-willAppear</code>–&gt;<code>A-didDisappear</code>–&gt;<code>B-didAppear</code></p>
+<p>Present： <code>A-willDisappear</code>–&gt;<code>B-willAppear</code>–&gt;<code>B-didAppear</code>–&gt;<code>A-didDisappear</code></p>
+<p>CustomPresent： <code>B-willAppear</code>–&gt;<code>B-didAppear</code></p>
+<p>TabBar： <code>B-willAppear</code>–&gt;<code>A-willDisappear</code>–&gt;<code>A-didDisappear</code>–&gt;<code>B-didAppear</code></p>
+<h2 id="疑惑"><a href="#疑惑" class="headerlink" title="疑惑"></a>疑惑</h2><hr>
+<p>为什么要把这个过程弄的这么复杂？目前还没有想法，如果有知道的朋友，希望告知。<img src="http://7xs81e.com1.z0.glb.clouddn.com/%E4%B8%80%E8%84%B8%E6%87%B5%E9%80%BC.png" ,="" width="40"></p>
 
       
     </div>
@@ -307,18 +381,24 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/viewDidAppear/" rel="tag">#viewDidAppear</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2016/03/24/初次接触-RunLoop/" rel="next" title="初次接触 RunLoop">
+                <i class="fa fa-chevron-left"></i> 初次接触 RunLoop
+              </a>
+            
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/03/10/Objective-C-runtime-的简单理解与使用（一）/" rel="prev" title="Objective-C runtime 的简单理解与使用（一）">
-                Objective-C runtime 的简单理解与使用（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -367,8 +447,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/03/10/第一篇博客/"
-           data-title="第一篇博客" data-url="http://yoursite.com/2016/03/10/第一篇博客/">
+      <div class="ds-thread" data-thread-key="2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/"
+           data-title="iOS 转场时 appear 与 disappear 的调用顺序探索" data-url="http://yoursite.com/2016/04/06/iOS-转场时-appear-与-disappear-的调用顺序探索/">
       </div>
     
   </div>
@@ -488,7 +568,7 @@
               
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">1.</span> <span class="nav-text">测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Push-amp-Pop"><span class="nav-number">1.1.</span> <span class="nav-text">Push & Pop</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Present-amp-Dismiss"><span class="nav-number">1.2.</span> <span class="nav-text">Present & Dismiss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TabBar切换"><span class="nav-number">1.3.</span> <span class="nav-text">TabBar切换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#疑惑"><span class="nav-number">3.</span> <span class="nav-text">疑惑</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
