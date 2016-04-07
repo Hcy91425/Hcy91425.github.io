@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -74,8 +74,8 @@
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"right","display":"hide"},
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"hide"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -114,7 +114,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-right 
+  <div class="container one-collumn sidebar-position-left 
    page-home 
  ">
     <div class="headband"></div>
@@ -314,86 +314,18 @@
 
       
         
-          
-            <p>本文主要内容来自于对官方文档 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA" target="_blank" rel="external">Key-Value Observing Programming Guide</a> 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。</p>
+          <p>本文主要内容来自于对官方文档 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA">Key-Value Observing Programming Guide</a> 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。</p>
 <h2 id="At-a-Glance"><a href="#At-a-Glance" class="headerlink" title="At a Glance"></a>At a Glance</h2><p>KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。</p>
 <h2 id="注册-KVO"><a href="#注册-KVO" class="headerlink" title="注册 KVO"></a>注册 KVO</h2><ul>
-<li><strong>被观察对象</strong> 的属性必须是 <a href="file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE" target="_blank" rel="external">KVO Compliant</a></li>
+<li><strong>被观察对象</strong> 的属性必须是 <a href="file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE">KVO Compliant</a></li>
 <li>必须用 <strong>被观察对象</strong> 的 <code>addObserver:forKeyPath:options:context:</code> 方法注册观察者</li>
 <li><strong>观察者</strong> 必须实现 <code>observeValueForKeyPath:ofObject:change:context:</code> 方法</li>
 </ul>
-<h3 id="注册成为观察者"><a href="#注册成为观察者" class="headerlink" title="注册成为观察者"></a>注册成为观察者</h3><hr>
-<p>为了能够在属性改变时被通知到，一个 <strong>观察者对象</strong> 必须通过 <strong>被观察对象</strong> 的<code>addObserver:forKeyPath:options:context:</code> 方法注册成为观察者。</p>
-<ul>
-<li><code>observer</code> 参数也就是一个观察者对象</li>
-<li><code>keyPath</code>  表示要观察的属性</li>
-<li><p><code>options</code>  决定了提供给观察者change字典中的具体信息有哪些。（change字典是一个提供给观察者的参数，后面会提到）</p>
-<ul>
-<li><code>NSKeyValueObservingOptionOld</code> 表示在change字典中包含了改变前的值。  </li>
-<li><code>NSKeyValueObservingOptionNew</code> 表示在change字典中包含新的值。</li>
-<li><code>NSKeyValueObservingOptionInitial</code> 在注册观察者的方法return的时候就会发出一次通知。</li>
-<li><code>NSKeyValueObservingOptionPrior</code> 会在值发生改变前发出一次通知，当然改变后的通知依旧还会发出，也就是每次change都会有两个通知。</li>
-</ul>
-</li>
-<li><p><code>context</code> 这个参数可以是一个 C指针，也可以是一个 对象引用，它可以作为这个context的唯一标识，也可以提供一些数据给观察者。</p>
-</li>
-</ul>
-<blockquote>
-<p>注意：  <code>addObserver:forKeyPath:options:context:</code> 方法不会持有观察者对象，被观察对象，以及context的强引用。你要确保自己持有了他们的强引用。</p>
-</blockquote>
-<h3 id="属性变化时接收通知"><a href="#属性变化时接收通知" class="headerlink" title="属性变化时接收通知"></a>属性变化时接收通知</h3><hr>
-<p>当一个被观察属性的值发生改变时，观察者会收到 <code>observeValueForKeyPath:ofObject:change:context:</code> 的消息。所有的观察者必须实现这个方法。这个方法中的参数和注册观察者方法的参数基本相同，只有一个 <code>change</code> 不同。 <code>change</code> 是一个字典，它里面包含了的信息由注册时的 <code>options</code> 决定。</p>
-<p>官方提供了这些key给我们来取到 <code>change</code> 中的value： </p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">NSKeyValueChangeKindKey</span>;</span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">NSKeyValueChangeNewKey</span>;</span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">NSKeyValueChangeOldKey</span>;</span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">NSKeyValueChangeIndexesKey</span>;</span><br><span class="line"><span class="built_in">NSString</span> *<span class="keyword">const</span> <span class="built_in">NSKeyValueChangeNotificationIsPriorKey</span>;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p><strong><code>NSKeyValueChangeKindKey</code></strong> 这个key包含的value是一个 NSNumber 里面是一个 int，与之对应的是 <code>NSKeyValueChange</code> 的枚举</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> &#123;</span><br><span class="line">   <span class="built_in">NSKeyValueChangeSetting</span> = <span class="number">1</span>,</span><br><span class="line">   <span class="built_in">NSKeyValueChangeInsertion</span> = <span class="number">2</span>,</span><br><span class="line">   <span class="built_in">NSKeyValueChangeRemoval</span> = <span class="number">3</span>,</span><br><span class="line">   <span class="built_in">NSKeyValueChangeReplacement</span> = <span class="number">4</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">typedef</span> <span class="built_in">NSUInteger</span> <span class="built_in">NSKeyValueChange</span>;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>当 <code>change[NSKeyValueChangeKindKey]</code> 是 <code>NSKeyValueChangeSetting</code> 的时候，说明被观察属性的setter方法被调用了。<br>而下面三种，根据官方文档的意思是，当被观察属性是集合类型，且对它进行了 insert，remove，replace 操作的时候会返回这三种Key，但是我自己测试的时候没有测试出来😓不知道是不是我理解错了。</p>
-<ul>
-<li><p><strong><code>NSKeyValueChangeNewKey</code></strong>，<strong><code>NSKeyValueChangeOldKey</code></strong> 顾名思义，当你在注册的时候 <code>options</code> 参数中填了对应的 <code>NSKeyValueObservingOptionNew</code> 和 <code>NSKeyValueObservingOptionOld</code> ，并且 <code>NSKeyValueChangeKindKey</code> 的值是 <code>NSKeyValueChangeSetting</code> ，你就可以通过这两个key取到 旧值和新值。</p>
-</li>
-<li><p><strong><code>NSKeyValueChangeIndexesKey</code></strong>， 当 <code>NSKeyValueChangeKindKey</code> 的结果是 <code>NSKeyValueChangeInsertion</code>, <code>NSKeyValueChangeRemoval</code> 或 <code>NSKeyValueChangeReplacement</code> 的时候，这个key的value是一个NSIndexSet，包含了发生insert，remove，replace的对象的索引集合</p>
-</li>
-<li><p><strong><code>NSKeyValueChangeNotificationIsPriorKey</code></strong>，这个key包含了一个 NSNumber，里面是一个布尔值，如果在注册时 <code>options</code> 中有 <code>NSKeyValueObservingOptionPrior</code>，那么在前一个通知中的 <code>change</code> 中就会有这个key的value， 我们可以这样来判断是不是在改变前的通知<code>[change[NSKeyValueChangeNotificationIsPriorKey] boolValue] == YES;</code></p>
-</li>
-</ul>
-<h3 id="移除一个观察者"><a href="#移除一个观察者" class="headerlink" title="移除一个观察者"></a>移除一个观察者</h3><hr>
-<p>你可以通过 <code>removeObserver:forKeyPath:</code> 方法来移除一个观察。如果你的 <code>context</code> 是一个 对象，你必须在移除观察之前持有它的强引用。当移除了观察后，观察者对象再也不会受到这个 keyPath 的通知。</p>
-<h2 id="KVO规范（Compliance）"><a href="#KVO规范（Compliance）" class="headerlink" title="KVO规范（Compliance）"></a>KVO规范（Compliance）</h2><p>有两种方式能够保证 change notification 能够被发出。</p>
-<ul>
-<li>自动通知，继承自NSObject，并且所有的属性符合<a href="file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/Compliant.html#//apple_ref/doc/uid/20002172" target="_blank" rel="external">KVC规范</a>这样就不用写额外的代码去实现自动通知。</li>
-<li>手动通知，让你的子类实现 <code>automaticallyNotifiesObserversForKey:</code> 方法，来决定是否需要自动通知，如果是手动通知需要额外的代码。</li>
-</ul>
-<h3 id="自动通知"><a href="#自动通知" class="headerlink" title="自动通知"></a>自动通知</h3><hr>
-<p> NSObject 已经实现了自动通知，只要通过 setter 方法去赋值，或者通过 KVC 就可以通知到观察者。自动通知也支持集合代理对象，比如 mutableArrayValueForKey: 方法。</p>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">// Call the accessor method.</span></span><br><span class="line">[account setName:<span class="string">@"Savings"</span>];</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Use setValue:forKey:.</span></span><br><span class="line">[account setValue:<span class="string">@"Savings"</span> forKey:<span class="string">@"name"</span>];</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Use a key path, where 'account' is a kvc-compliant property of 'document'.</span></span><br><span class="line">[document setValue:<span class="string">@"Savings"</span> forKeyPath:<span class="string">@"account.name"</span>];</span><br><span class="line"> </span><br><span class="line"><span class="comment">// Use mutableArrayValueForKey: to retrieve a relationship proxy object.</span></span><br><span class="line">Transaction *newTransaction = &lt;<span class="meta">#Create a new transaction for the account#&gt;;</span></span><br><span class="line"><span class="built_in">NSMutableArray</span> *transactions = [account mutableArrayValueForKey:<span class="string">@"transactions"</span>];</span><br><span class="line">[transactions addObject:newTransaction];</span><br></pre></td></tr></table></figure>
-<h3 id="手动通知"><a href="#手动通知" class="headerlink" title="手动通知"></a>手动通知</h3><hr>
-<p> 手动通知提供了更自由的方式去决定什么时间，什么方式去通知观察者。这可以帮助你最少限度触发不必要的通知，或者一组改变值发出一个通知。想要使用手动通知必须实现<code>automaticallyNotifiesObserversForKey:</code> 方法。(或者<code>automaticallyNotifiesObserversOfS&lt;Key&gt;</code>)在一个类中同时使用自动和手动通知是可行的。对于想要手动通知的属性，可以根据它的keyPath返回NO，而其对于其他位置的keyPath，要返回父类的这个方法。</p>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> + (<span class="built_in">BOOL</span>)automaticallyNotifiesObserversForKey:(<span class="built_in">NSString</span> *)theKey &#123;</span><br><span class="line">    	<span class="built_in">BOOL</span> automatic = <span class="literal">NO</span>;</span><br><span class="line">    	<span class="keyword">if</span> ([theKey isEqualToString:<span class="string">@"openingBalance"</span>]) &#123;</span><br><span class="line">    	    automatic = <span class="literal">NO</span>;</span><br><span class="line">   		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">     	    automatic = [<span class="keyword">super</span> automaticallyNotifiesObserversForKey:theKey];</span><br><span class="line">   	 	&#125;</span><br><span class="line">   	 	<span class="keyword">return</span> automatic;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 要实现手动通知，你需要在值改变前调用 <code>willChangeValueForKey:</code> 方法，在值改变后调用 <code>didChangeValueForKey:</code> 方法。你可以在发送通知前检查值是否改变，如果没有改变就不发送通知</p>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)setOpeningBalance:(<span class="keyword">double</span>)theBalance &#123;</span><br><span class="line">    	<span class="keyword">if</span> (theBalance != _openingBalance) &#123;</span><br><span class="line">       	 [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"openingBalance"</span>];</span><br><span class="line">       	 _openingBalance = theBalance;</span><br><span class="line">       	 [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"openingBalance"</span>];</span><br><span class="line">   	 	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 如果一个操作会导致多个属性改变，你需要嵌套通知，像下面这样：</p>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)setOpeningBalance:(<span class="keyword">double</span>)theBalance &#123;</span><br><span class="line">    	[<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"openingBalance"</span>];</span><br><span class="line">    	[<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"itemChanged"</span>];</span><br><span class="line">   	 	_openingBalance = theBalance;</span><br><span class="line">    	_itemChanged = _itemChanged+<span class="number">1</span>;</span><br><span class="line">    	[<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"itemChanged"</span>];</span><br><span class="line">    	[<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"openingBalance"</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p> 在一个一对多的关系中，你必须注意不仅仅是这个key改变了，还有它改变的类型以及索引。</p>
- <figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> - (<span class="keyword">void</span>)removeTransactionsAtIndexes:(<span class="built_in">NSIndexSet</span> *)indexes &#123;</span><br><span class="line">    	[<span class="keyword">self</span> willChange:<span class="built_in">NSKeyValueChangeRemoval</span> valuesAtIndexes:indexes forKey:<span class="string">@"transactions"</span>];</span><br><span class="line"> </span><br><span class="line">	   	<span class="comment">// Remove the transaction objects at the specified indexes.</span></span><br><span class="line"> </span><br><span class="line">    	[<span class="keyword">self</span> didChange:<span class="built_in">NSKeyValueChangeRemoval</span> valuesAtIndexes:indexes forKey:<span class="string">@"transactions"</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="键之间的依赖"><a href="#键之间的依赖" class="headerlink" title="键之间的依赖"></a>键之间的依赖</h2><p>在很多种情况下一个属性的值依赖于在其他对象中的属性。如果一个依赖属性的值改变了，这个属性也需要被通知到。</p>
-<h3 id="To-one-Relationships"><a href="#To-one-Relationships" class="headerlink" title="To-one Relationships"></a>To-one Relationships</h3><hr>
-<p>比如有一个教 <code>fullName</code> 的属性，依赖于 <code>firstName</code> 和 <code>lastName</code>，当 <code>firstName</code> 或者 <code>lastName</code> 改变时，这个 <code>fullName</code> 属性需要被通知到。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSString</span> *)fullName &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"%@ %@"</span>,firstName, lastName];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>你可以重写 <code>keyPathsForValuesAffectingValueForKey:</code> 方法。其中要先调父类的这个方法拿到一个set，再做接下来的操作。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">NSSet</span> *)keyPathsForValuesAffectingValueForKey:(<span class="built_in">NSString</span> *)key &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="built_in">NSSet</span> *keyPaths = [<span class="keyword">super</span> keyPathsForValuesAffectingValueForKey:key];</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> ([key isEqualToString:<span class="string">@"fullName"</span>]) &#123;</span><br><span class="line">        <span class="built_in">NSArray</span> *affectingKeys = @[<span class="string">@"lastName"</span>, <span class="string">@"firstName"</span>];</span><br><span class="line">        keyPaths = [keyPaths setByAddingObjectsFromArray:affectingKeys];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> keyPaths;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>你也可以通过实现 <code>keyPathsForValuesAffecting&lt;Key&gt;</code> 方法来达到前面同样的效果，这里的<key>就是属性名，不过第一个字母要大写，用前面的例子来说就是这样：</key></p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">+ (<span class="built_in">NSSet</span> *)keyPathsForValuesAffectingFullName &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">NSSet</span> setWithObjects:<span class="string">@"lastName"</span>, <span class="string">@"firstName"</span>, <span class="literal">nil</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="To-many-Relationships"><a href="#To-many-Relationships" class="headerlink" title="To-many Relationships"></a>To-many Relationships</h3><hr>
-<p><code>keyPathsForValuesAffectingValueForKey:</code>方法不能支持 to-many 的关系。举个例子，比如你有一个 Department 对象，和很多个 Employee 对象。而 Employee 有一个 salary 属性。你可能希望 Department 对象有一个 totalSalary 的属性，依赖于所有的 Employee 的 salary 。</p>
-<p>你可以注册 Department 成为所有 Employee 的观察者。当 Employee 被添加或者被移除时，你必须要添加和移除观察者。然后在 <code>observeValueForKeyPath:ofObject:change:context:</code> 方法中，根据改变做出反馈。</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(<span class="built_in">NSString</span> *)keyPath ofObject:(<span class="keyword">id</span>)object change:(<span class="built_in">NSDictionary</span> *)change context:(<span class="keyword">void</span> *)context &#123;</span><br><span class="line">    <span class="keyword">if</span> (context == totalSalaryContext) &#123;</span><br><span class="line">        [<span class="keyword">self</span> updateTotalSalary];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    <span class="comment">// deal with other observations and/or invoke super...</span></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="keyword">void</span>)updateTotalSalary &#123;</span><br><span class="line">    [<span class="keyword">self</span> setTotalSalary:[<span class="keyword">self</span> valueForKeyPath:<span class="string">@"employees.@sum.salary"</span>]];</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="keyword">void</span>)setTotalSalary:(<span class="built_in">NSNumber</span> *)newTotalSalary &#123;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">if</span> (totalSalary != newTotalSalary) &#123;</span><br><span class="line">        [<span class="keyword">self</span> willChangeValueForKey:<span class="string">@"totalSalary"</span>];</span><br><span class="line">        _totalSalary = newTotalSalary;</span><br><span class="line">        [<span class="keyword">self</span> didChangeValueForKey:<span class="string">@"totalSalary"</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">- (<span class="built_in">NSNumber</span> *)totalSalary &#123;</span><br><span class="line">    <span class="keyword">return</span> _totalSalary;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="KVO的实现细节"><a href="#KVO的实现细节" class="headerlink" title="KVO的实现细节"></a>KVO的实现细节</h2><p>KVO 的实现用了一种叫 <strong><code>isa-swizzling</code></strong> 的技术。isa 指针就是指向类的指针，当一个对象的一个属性注册了观察者后，被观察对象的isa指针的就指向了一个系统为我们生成的中间类，而不是我们自己创建的类。在这个类中，系统为我们重写了被观察属性的setter方法。你可以通过 <code>object_getClass(id obj)</code> 方法获得对象真实的类,在 addObserver 前后分别打印，就可以看到isa指针被指向了一个中间类。似乎都是在原来的类名前面加上 <code>NSKVONotifying_</code></p>
-<p>isa指针不总是指向真实的类，所以你不应该依赖于 isa 指针来判断这个对象的类型，而应该通过 <code>class</code> 方法来判断对象的类型。如果你还不知道什么是isa指针，可以看我之前写的博客 <a href="http://blog.cyrusdev.com/2016/03/10/Objective-C-runtime-%E7%9A%84%E7%AE%80%E5%8D%95%E7%90%86%E8%A7%A3%E4%B8%8E%E4%BD%BF%E7%94%A8%EF%BC%88%E4%B8%80%EF%BC%89/" target="_blank" rel="external">Objective-C runtime 的简单理解与使用</a></p>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2016/04/07/iOS-KVO-键值观察/" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1374,7 +1306,7 @@
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Muse
   </a>
 </div>
 
@@ -1427,13 +1359,6 @@
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
 
   
 

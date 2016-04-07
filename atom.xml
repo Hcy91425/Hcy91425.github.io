@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-04-07T14:00:46.000Z</updated>
+  <updated>2016-04-07T14:06:51.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://yoursite.com/2016/04/07/iOS-KVO-%E9%94%AE%E5%80%BC%E8%A7%82%E5%AF%9F/"/>
     <id>http://yoursite.com/2016/04/07/iOS-KVO-键值观察/</id>
     <published>2016-04-07T13:59:28.000Z</published>
-    <updated>2016-04-07T14:00:46.000Z</updated>
+    <updated>2016-04-07T14:06:51.000Z</updated>
     
     <content type="html">&lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
 &lt;h2 id=&quot;At-a-Glance&quot;&gt;&lt;a href=&quot;#At-a-Glance&quot; class=&quot;headerlink&quot; title=&quot;At a Glance&quot;&gt;&lt;/a&gt;At a Glance&lt;/h2&gt;&lt;p&gt;KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。&lt;/p&gt;
@@ -29,6 +29,7 @@
 &lt;li&gt;必须用 &lt;strong&gt;被观察对象&lt;/strong&gt; 的 &lt;code&gt;addObserver:forKeyPath:options:context:&lt;/code&gt; 方法注册观察者&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;观察者&lt;/strong&gt; 必须实现 &lt;code&gt;observeValueForKeyPath:ofObject:change:context:&lt;/code&gt; 方法&lt;/li&gt;
 &lt;/ul&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
 &lt;h3 id=&quot;注册成为观察者&quot;&gt;&lt;a href=&quot;#注册成为观察者&quot; class=&quot;headerlink&quot; title=&quot;注册成为观察者&quot;&gt;&lt;/a&gt;注册成为观察者&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;为了能够在属性改变时被通知到，一个 &lt;strong&gt;观察者对象&lt;/strong&gt; 必须通过 &lt;strong&gt;被观察对象&lt;/strong&gt; 的&lt;code&gt;addObserver:forKeyPath:options:context:&lt;/code&gt; 方法注册成为观察者。&lt;/p&gt;
 &lt;ul&gt;
@@ -68,7 +69,7 @@
 &lt;/ul&gt;
 &lt;h3 id=&quot;移除一个观察者&quot;&gt;&lt;a href=&quot;#移除一个观察者&quot; class=&quot;headerlink&quot; title=&quot;移除一个观察者&quot;&gt;&lt;/a&gt;移除一个观察者&lt;/h3&gt;&lt;hr&gt;
 &lt;p&gt;你可以通过 &lt;code&gt;removeObserver:forKeyPath:&lt;/code&gt; 方法来移除一个观察。如果你的 &lt;code&gt;context&lt;/code&gt; 是一个 对象，你必须在移除观察之前持有它的强引用。当移除了观察后，观察者对象再也不会受到这个 keyPath 的通知。&lt;/p&gt;
-&lt;h2 id=&quot;KVO规范（Compliance）&quot;&gt;&lt;a href=&quot;#KVO规范（Compliance）&quot; class=&quot;headerlink&quot; title=&quot;KVO规范（Compliance）&quot;&gt;&lt;/a&gt;KVO规范（Compliance）&lt;/h2&gt;&lt;p&gt;有两种方式能够保证 change notification 能够被发出。&lt;/p&gt;
+&lt;h2 id=&quot;KVO-Compliance&quot;&gt;&lt;a href=&quot;#KVO-Compliance&quot; class=&quot;headerlink&quot; title=&quot;KVO Compliance&quot;&gt;&lt;/a&gt;KVO Compliance&lt;/h2&gt;&lt;p&gt;有两种方式能够保证 change notification 能够被发出。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;自动通知，继承自NSObject，并且所有的属性符合&lt;a href=&quot;file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/Compliant.html#//apple_ref/doc/uid/20002172&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;KVC规范&lt;/a&gt;这样就不用写额外的代码去实现自动通知。&lt;/li&gt;
 &lt;li&gt;手动通知，让你的子类实现 &lt;code&gt;automaticallyNotifiesObserversForKey:&lt;/code&gt; 方法，来决定是否需要自动通知，如果是手动通知需要额外的代码。&lt;/li&gt;
@@ -103,7 +104,13 @@
     
     <summary type="html">
     
-      &lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#/
+      &lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
+&lt;h2 id=&quot;At-a-Glance&quot;&gt;&lt;a href=&quot;#At-a-Glance&quot; class=&quot;headerlink&quot; title=&quot;At a Glance&quot;&gt;&lt;/a&gt;At a Glance&lt;/h2&gt;&lt;p&gt;KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。&lt;/p&gt;
+&lt;h2 id=&quot;注册-KVO&quot;&gt;&lt;a href=&quot;#注册-KVO&quot; class=&quot;headerlink&quot; title=&quot;注册 KVO&quot;&gt;&lt;/a&gt;注册 KVO&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;被观察对象&lt;/strong&gt; 的属性必须是 &lt;a href=&quot;file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE&quot;&gt;KVO Compliant&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;必须用 &lt;strong&gt;被观察对象&lt;/strong&gt; 的 &lt;code&gt;addObserver:forKeyPath:options:context:&lt;/code&gt; 方法注册观察者&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;观察者&lt;/strong&gt; 必须实现 &lt;code&gt;observeValueForKeyPath:ofObject:change:context:&lt;/code&gt; 方法&lt;/li&gt;
+&lt;/ul&gt;
     
     </summary>
     

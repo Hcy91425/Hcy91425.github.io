@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next pisces use-motion">
+<html class="theme-next muse use-motion">
 <head>
   <meta charset="UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
@@ -67,7 +67,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 <meta property="og:site_name" content="Cyrus' blog">
 <meta property="og:description" content="本文主要内容来自于对官方文档 Key-Value Observing Programming Guide 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。
 At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变">
-<meta property="og:updated_time" content="2016-04-07T14:00:46.000Z">
+<meta property="og:updated_time" content="2016-04-07T14:06:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS KVO(键值观察) ">
 <meta name="twitter:description" content="本文主要内容来自于对官方文档 Key-Value Observing Programming Guide 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。
@@ -78,8 +78,8 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 <script type="text/javascript" id="hexo.configuration">
   var NexT = window.NexT || {};
   var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"right","display":"hide"},
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"hide"},
     fancybox: true,
     motion: true,
     duoshuo: {
@@ -118,7 +118,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
     
   
 
-  <div class="container one-collumn sidebar-position-right page-post-detail ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -319,6 +319,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 <li>必须用 <strong>被观察对象</strong> 的 <code>addObserver:forKeyPath:options:context:</code> 方法注册观察者</li>
 <li><strong>观察者</strong> 必须实现 <code>observeValueForKeyPath:ofObject:change:context:</code> 方法</li>
 </ul>
+<a id="more"></a>
 <h3 id="注册成为观察者"><a href="#注册成为观察者" class="headerlink" title="注册成为观察者"></a>注册成为观察者</h3><hr>
 <p>为了能够在属性改变时被通知到，一个 <strong>观察者对象</strong> 必须通过 <strong>被观察对象</strong> 的<code>addObserver:forKeyPath:options:context:</code> 方法注册成为观察者。</p>
 <ul>
@@ -358,7 +359,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 </ul>
 <h3 id="移除一个观察者"><a href="#移除一个观察者" class="headerlink" title="移除一个观察者"></a>移除一个观察者</h3><hr>
 <p>你可以通过 <code>removeObserver:forKeyPath:</code> 方法来移除一个观察。如果你的 <code>context</code> 是一个 对象，你必须在移除观察之前持有它的强引用。当移除了观察后，观察者对象再也不会受到这个 keyPath 的通知。</p>
-<h2 id="KVO规范（Compliance）"><a href="#KVO规范（Compliance）" class="headerlink" title="KVO规范（Compliance）"></a>KVO规范（Compliance）</h2><p>有两种方式能够保证 change notification 能够被发出。</p>
+<h2 id="KVO-Compliance"><a href="#KVO-Compliance" class="headerlink" title="KVO Compliance"></a>KVO Compliance</h2><p>有两种方式能够保证 change notification 能够被发出。</p>
 <ul>
 <li>自动通知，继承自NSObject，并且所有的属性符合<a href="file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueCoding/Articles/Compliant.html#//apple_ref/doc/uid/20002172" target="_blank" rel="external">KVC规范</a>这样就不用写额外的代码去实现自动通知。</li>
 <li>手动通知，让你的子类实现 <code>automaticallyNotifiesObserversForKey:</code> 方法，来决定是否需要自动通知，如果是手动通知需要额外的代码。</li>
@@ -588,7 +589,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#At-a-Glance"><span class="nav-number">1.</span> <span class="nav-text">At a Glance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-KVO"><span class="nav-number">2.</span> <span class="nav-text">注册 KVO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册成为观察者"><span class="nav-number">2.1.</span> <span class="nav-text">注册成为观察者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性变化时接收通知"><span class="nav-number">2.2.</span> <span class="nav-text">属性变化时接收通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除一个观察者"><span class="nav-number">2.3.</span> <span class="nav-text">移除一个观察者</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO规范（Compliance）"><span class="nav-number">3.</span> <span class="nav-text">KVO规范（Compliance）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动通知"><span class="nav-number">3.1.</span> <span class="nav-text">自动通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动通知"><span class="nav-number">3.2.</span> <span class="nav-text">手动通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键之间的依赖"><span class="nav-number">4.</span> <span class="nav-text">键之间的依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#To-one-Relationships"><span class="nav-number">4.1.</span> <span class="nav-text">To-one Relationships</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#To-many-Relationships"><span class="nav-number">4.2.</span> <span class="nav-text">To-many Relationships</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO的实现细节"><span class="nav-number">5.</span> <span class="nav-text">KVO的实现细节</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#At-a-Glance"><span class="nav-number">1.</span> <span class="nav-text">At a Glance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册-KVO"><span class="nav-number">2.</span> <span class="nav-text">注册 KVO</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册成为观察者"><span class="nav-number">2.1.</span> <span class="nav-text">注册成为观察者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性变化时接收通知"><span class="nav-number">2.2.</span> <span class="nav-text">属性变化时接收通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#移除一个观察者"><span class="nav-number">2.3.</span> <span class="nav-text">移除一个观察者</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO-Compliance"><span class="nav-number">3.</span> <span class="nav-text">KVO Compliance</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#自动通知"><span class="nav-number">3.1.</span> <span class="nav-text">自动通知</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动通知"><span class="nav-number">3.2.</span> <span class="nav-text">手动通知</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#键之间的依赖"><span class="nav-number">4.</span> <span class="nav-text">键之间的依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#To-one-Relationships"><span class="nav-number">4.1.</span> <span class="nav-text">To-one Relationships</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#To-many-Relationships"><span class="nav-number">4.2.</span> <span class="nav-text">To-many Relationships</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KVO的实现细节"><span class="nav-number">5.</span> <span class="nav-text">KVO的实现细节</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
@@ -624,7 +625,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 <div class="theme-info">
   主题 -
   <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+    NexT.Muse
   </a>
 </div>
 
@@ -677,13 +678,6 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
 
   
   
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=0.5.0"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=0.5.0"></script>
-
-
 
   
   
