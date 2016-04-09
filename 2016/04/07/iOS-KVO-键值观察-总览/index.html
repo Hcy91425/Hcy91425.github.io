@@ -60,18 +60,20 @@
 
 
 <meta name="description" content="本文主要内容来自于对官方文档 Key-Value Observing Programming Guide 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。
-At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变">
+At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS KVO(键值观察) ">
-<meta property="og:url" content="http://yoursite.com/2016/04/07/iOS-KVO-键值观察/index.html">
+<meta property="og:title" content="iOS KVO(键值观察) 总览">
+<meta property="og:url" content="http://yoursite.com/2016/04/07/iOS-KVO-键值观察-总览/index.html">
 <meta property="og:site_name" content="Cyrus' blog">
 <meta property="og:description" content="本文主要内容来自于对官方文档 Key-Value Observing Programming Guide 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。
-At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变">
-<meta property="og:updated_time" content="2016-04-07T14:06:51.000Z">
+At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改">
+<meta property="og:image" content="http://7xrpns.com1.z0.glb.clouddn.com/heading-KVO.png">
+<meta property="og:updated_time" content="2016-04-09T04:34:43.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS KVO(键值观察) ">
+<meta name="twitter:title" content="iOS KVO(键值观察) 总览">
 <meta name="twitter:description" content="本文主要内容来自于对官方文档 Key-Value Observing Programming Guide 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。
-At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变">
+At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改">
+<meta name="twitter:image" content="http://7xrpns.com1.z0.glb.clouddn.com/heading-KVO.png">
 
 
 
@@ -89,7 +91,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
   };
 </script>
 
-  <title> iOS KVO(键值观察)  | Cyrus' blog </title>
+  <title> iOS KVO(键值观察) 总览 | Cyrus' blog </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -247,7 +249,7 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
             
             
               
-                iOS KVO(键值观察) 
+                iOS KVO(键值观察) 总览
               
             
           </h1>
@@ -289,8 +291,8 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2016/04/07/iOS-KVO-键值观察/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/07/iOS-KVO-键值观察/" itemprop="commentsCount"></span>
+                <a href="/2016/04/07/iOS-KVO-键值观察-总览/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/07/iOS-KVO-键值观察-总览/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -312,7 +314,8 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
       
 
       
-        <p>本文主要内容来自于对官方文档 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA" target="_blank" rel="external">Key-Value Observing Programming Guide</a> 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。</p>
+        <p><img src="http://7xrpns.com1.z0.glb.clouddn.com/heading-KVO.png" alt=""></p>
+<p>本文主要内容来自于对官方文档 <a href="https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA" target="_blank" rel="external">Key-Value Observing Programming Guide</a> 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。</p>
 <h2 id="At-a-Glance"><a href="#At-a-Glance" class="headerlink" title="At a Glance"></a>At a Glance</h2><p>KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。</p>
 <h2 id="注册-KVO"><a href="#注册-KVO" class="headerlink" title="注册 KVO"></a>注册 KVO</h2><ul>
 <li><strong>被观察对象</strong> 的属性必须是 <a href="file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE" target="_blank" rel="external">KVO Compliant</a></li>
@@ -468,8 +471,8 @@ At a GlanceKVO 也就是 键值观察 ，它提供了一种机制，使得当某
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2016/04/07/iOS-KVO-键值观察/"
-           data-title="iOS KVO(键值观察) " data-url="http://yoursite.com/2016/04/07/iOS-KVO-键值观察/">
+      <div class="ds-thread" data-thread-key="2016/04/07/iOS-KVO-键值观察-总览/"
+           data-title="iOS KVO(键值观察) 总览" data-url="http://yoursite.com/2016/04/07/iOS-KVO-键值观察-总览/">
       </div>
     
   </div>

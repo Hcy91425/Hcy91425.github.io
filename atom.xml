@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2016-04-07T14:06:51.000Z</updated>
+  <updated>2016-04-09T04:34:43.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,13 +16,14 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>iOS KVO(键值观察) </title>
-    <link href="http://yoursite.com/2016/04/07/iOS-KVO-%E9%94%AE%E5%80%BC%E8%A7%82%E5%AF%9F/"/>
-    <id>http://yoursite.com/2016/04/07/iOS-KVO-键值观察/</id>
+    <title>iOS KVO(键值观察) 总览</title>
+    <link href="http://yoursite.com/2016/04/07/iOS-KVO-%E9%94%AE%E5%80%BC%E8%A7%82%E5%AF%9F-%E6%80%BB%E8%A7%88/"/>
+    <id>http://yoursite.com/2016/04/07/iOS-KVO-键值观察-总览/</id>
     <published>2016-04-07T13:59:28.000Z</published>
-    <updated>2016-04-07T14:06:51.000Z</updated>
+    <updated>2016-04-09T04:34:43.000Z</updated>
     
-    <content type="html">&lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
+    <content type="html">&lt;p&gt;&lt;img src=&quot;http://7xrpns.com1.z0.glb.clouddn.com/heading-KVO.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
 &lt;h2 id=&quot;At-a-Glance&quot;&gt;&lt;a href=&quot;#At-a-Glance&quot; class=&quot;headerlink&quot; title=&quot;At a Glance&quot;&gt;&lt;/a&gt;At a Glance&lt;/h2&gt;&lt;p&gt;KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。&lt;/p&gt;
 &lt;h2 id=&quot;注册-KVO&quot;&gt;&lt;a href=&quot;#注册-KVO&quot; class=&quot;headerlink&quot; title=&quot;注册 KVO&quot;&gt;&lt;/a&gt;注册 KVO&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;被观察对象&lt;/strong&gt; 的属性必须是 &lt;a href=&quot;file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;KVO Compliant&lt;/a&gt;&lt;/li&gt;
@@ -104,7 +105,8 @@
     
     <summary type="html">
     
-      &lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
+      &lt;p&gt;&lt;img src=&quot;http://7xrpns.com1.z0.glb.clouddn.com/heading-KVO.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;本文主要内容来自于对官方文档 &lt;a href=&quot;https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/KeyValueObserving/KeyValueObserving.html#//apple_ref/doc/uid/10000177-BCICJDHA&quot;&gt;Key-Value Observing Programming Guide&lt;/a&gt; 的翻译，以及一部分我自己的理解和解释，如果有说错的地方请及时联系我。&lt;/p&gt;
 &lt;h2 id=&quot;At-a-Glance&quot;&gt;&lt;a href=&quot;#At-a-Glance&quot; class=&quot;headerlink&quot; title=&quot;At a Glance&quot;&gt;&lt;/a&gt;At a Glance&lt;/h2&gt;&lt;p&gt;KVO 也就是 键值观察 ，它提供了一种机制，使得当某个对象特定的属性发生改变时能够通知到别的对象。这经常用于 model 和 controller 之间的通信。KVO主要的优点是你不需要在每次属性改变时手动去发送通知。并且它支持为一个属性注册多个观察者。&lt;/p&gt;
 &lt;h2 id=&quot;注册-KVO&quot;&gt;&lt;a href=&quot;#注册-KVO&quot; class=&quot;headerlink&quot; title=&quot;注册 KVO&quot;&gt;&lt;/a&gt;注册 KVO&lt;/h2&gt;&lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;被观察对象&lt;/strong&gt; 的属性必须是 &lt;a href=&quot;file:///Users/hcy/Library/Developer/Shared/Documentation/DocSets/com.apple.adc.documentation.iOS.docset/Contents/Resources/Documents/documentation/Cocoa/Conceptual/KeyValueObserving/Articles/KVOCompliance.html#//apple_ref/doc/uid/20002178-BAJEAIEE&quot;&gt;KVO Compliant&lt;/a&gt;&lt;/li&gt;
